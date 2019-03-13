@@ -21,9 +21,13 @@ public:
 private:
     Ui::Widget *ui;
     VideoCapture * webCam_;
+    QTimer * timer;
+    VideoCapture cap;
+    CascadeClassifier face_cascade;
 
 private slots:
-    void on_captureButton__clicked();
+    void updatePicture();
+
 };
 
 #endif // WIDGET_H
