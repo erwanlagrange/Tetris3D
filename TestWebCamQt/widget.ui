@@ -18,18 +18,19 @@
     <widget class="QOpenGLWidget" name="openGLWidget"/>
    </item>
    <item>
-    <widget class="QLabel" name="CamLabel_">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
+    <widget class="camera" name="cameraWidget" native="true"/>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>camera</class>
+   <extends>QWidget</extends>
+   <header>camera.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
