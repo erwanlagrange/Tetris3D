@@ -5,6 +5,7 @@
 
 #include "widget.h"
 #include "ui_widget.h"
+#include "widgettetris.h"
 #include <QString>
 #include <QTimer>
 #include <cstdio>
@@ -19,6 +20,8 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
     Camera * widgetCamera = new Camera();
+    WidgetTetris * widgetTetris = new WidgetTetris();
+    resize(600,900);
 }
 
 

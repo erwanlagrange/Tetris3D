@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QOpenGLWidget" name="openGLWidget"/>
+    <widget class="WidgetTetris" name="openGLWidget"/>
    </item>
    <item>
     <widget class="camera" name="cameraWidget" native="true"/>
@@ -29,6 +29,11 @@
    <extends>QWidget</extends>
    <header>camera.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WidgetTetris</class>
+   <extends>QOpenGLWidget</extends>
+   <header>widgettetris.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

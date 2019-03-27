@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <cstdio>
 #include <iostream>
+#include <QDebug>
 
 using namespace cv;
 using namespace std;
@@ -22,8 +23,8 @@ Camera::Camera(QWidget *parent) :
 
     cap = VideoCapture(0);
 
-    int frameWidth = 320;
-    int frameHeight = 240;
+    int frameWidth = 600;
+    int frameHeight = 300;
 
     cap.set(CV_CAP_PROP_FRAME_WIDTH,frameWidth);
     cap.set(CV_CAP_PROP_FRAME_HEIGHT,frameHeight);
@@ -33,7 +34,7 @@ Camera::Camera(QWidget *parent) :
         cerr<<"Error openning the default camera"<<endl;
     }
 
-    if( !face_cascade.load( "../TestWebCamQt/fist.xml" ) )
+    if( !face_cascade.load( "../TestWebCamQt/fist_v3.xml" ) )
     {
         cerr<<"Error loading haarcascade"<<endl;
     }
@@ -55,17 +56,12 @@ void Camera::updatePicture()
             // Get frame
             cap >> frame;
 
-            // Convert to gray
-            cv::cvtColor(frame,frame_gray,COLOR_BGR2GRAY);
-            //-- Detect fist
-            face_cascade.detectMultiScale( frame_gray, fist, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(60, 60) );
-
             // Mirror effect
             cv::flip(frame,frame,1);
             // Convert to gray
             cv::cvtColor(frame,frame_gray,COLOR_BGR2GRAY);
             //-- Detect fist
-            face_cascade.detectMultiScale( frame_gray, fist, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(60, 60) );
+            face_cascade.detectMultiScale( frame_gray, fist, 1.1, 4, 0|CV_HAAR_SCALE_IMAGE, Size(60, 60) );
 
             if (fist.size()>0)
             {
@@ -82,17 +78,41 @@ void Camera::updatePicture()
 
             ui->label->setPixmap(QPixmap::fromImage(image1));
             ui->label->show();
+            char res = positionMain();
     }
 
 char Camera::positionMain()
     {
-    if(fist.size() == 2)  {
 
-        if (fist[0].br().x + fist[0].tl().x)*0.5 - fist[1].br().x + fist[1].tl().x)*0.5 <= 150 && fist[0].br().y + fist[0].tl().y)*0.5 - fist[1].br().y + fist[1].tl().y)*0.5 <= 150)
+    //qDebug()<<fist.size();
+    ui->label_direction->setText("");
+
+    if(fist.size() == 2)  {
+        int centreX1 = (fist[0].br().x + fist[0].tl().x)/2;
+        int centreY1 = (fist[0].br().y + fist[0].tl().y)/2;
+        int centreX2 = (fist[1].br().x + fist[1].tl().x)/2;
+        int centreY2 = (fist[1].br().y + fist[1].tl().y)/2;
+
+        if (abs(centreX1 - centreX2) < 100 && abs(centreY1 - centreY2) < 30)
         {
-           return  't';
+           qDebug()<<"touche";
+           ui->label_direction->setText("touche");
+           return  'c';
         }
 
+        if (centreY1 > 175 && centreY2 < 125)
+        {
+           qDebug()<<"gauche";
+           ui->label_direction->setText("gauche");
+           return  'g';
+        }
+
+        if (centreY1 < 125 && centreY2 > 175)
+        {
+           qDebug()<<"droite";
+           ui->label_direction->setText("droite");
+           return  'droite';
+        }
     }
 
-    }
+}

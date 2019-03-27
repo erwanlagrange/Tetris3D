@@ -6,25 +6,42 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>600</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>ici est la camera</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>21</y>
+     <width>581</width>
+     <height>271</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ici est la camera</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_direction">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>0</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string> </string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

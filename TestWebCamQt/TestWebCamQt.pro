@@ -13,19 +13,20 @@ TARGET = TestWebCamQt
 TEMPLATE = app
 
 SOURCES += main.cpp\
-    myglwidget.cpp \
     Widget.cpp \
-    camera.cpp
+    camera.cpp \
+    widgettetris.cpp
 
 HEADERS  += \
-    myglwidget.h \
     Widget.h \
-    camera.h
+    camera.h \
+    widgettetris.h
 
 FORMS    += \
     widget.ui \
     camera.ui \
-    camera.ui
+    camera.ui \
+    widgettetris.ui
 
 INCLUDEPATH +=$$(OPENCV_DIR)\..\..\include
 
