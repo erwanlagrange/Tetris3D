@@ -52,11 +52,10 @@
 
 #include "tetrixboard.h"
 
-//! [0]
 TetrixBoard::TetrixBoard(QWidget *parent)
-    : QFrame(parent)
+    : QGLWidget (parent)
 {
-    setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    //setFrameStyle(QFrame::Panel | QFrame::Sunken);
     setFocusPolicy(Qt::StrongFocus);
     isStarted = false;
     isPaused = false;
@@ -64,17 +63,13 @@ TetrixBoard::TetrixBoard(QWidget *parent)
 
     nextPiece.setRandomShape();
 }
-//! [0]
 
-//! [1]
 void TetrixBoard::setNextPieceLabel(QLabel *label)
 {
     nextPieceLabel = label;
 }
-//! [1]
 
-//! [2]
-QSize TetrixBoard::sizeHint() const
+/*QSize TetrixBoard::sizeHint() const
 {
     return QSize(BoardWidth * 15 + frameWidth() * 2,
                  BoardHeight * 15 + frameWidth() * 2);
@@ -85,10 +80,8 @@ QSize TetrixBoard::minimumSizeHint() const
 {
     return QSize(BoardWidth * 5 + frameWidth() * 2,
                  BoardHeight * 5 + frameWidth() * 2);
-}
-//! [3]
+}*/
 
-//! [4]
 void TetrixBoard::start()
 {
     if (isPaused)
@@ -131,7 +124,7 @@ void TetrixBoard::pause()
 //! [7]
 void TetrixBoard::paintEvent(QPaintEvent *event)
 {
-    QFrame::paintEvent(event);
+    QGLWidget::paintEvent(event);
 
     QPainter painter(this);
     QRect rect = contentsRect();
@@ -175,7 +168,7 @@ void TetrixBoard::paintEvent(QPaintEvent *event)
 void TetrixBoard::keyPressEvent(QKeyEvent *event)
 {
     if (!isStarted || isPaused || curPiece.shape() == NoShape) {
-        QFrame::keyPressEvent(event);
+        QGLWidget::keyPressEvent(event);
         return;
     }
 //! [13]
@@ -201,7 +194,7 @@ void TetrixBoard::keyPressEvent(QKeyEvent *event)
         oneLineDown();
         break;
     default:
-        QFrame::keyPressEvent(event);
+        QGLWidget::keyPressEvent(event);
     }
 //! [14]
 }
@@ -218,7 +211,7 @@ void TetrixBoard::timerEvent(QTimerEvent *event)
             oneLineDown();
         }
     } else {
-        QFrame::timerEvent(event);
+        QGLWidget::timerEvent(event);
 //! [15] //! [16]
     }
 //! [16] //! [17]
