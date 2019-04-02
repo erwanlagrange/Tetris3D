@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
     Widget.cpp \
     camera.cpp \
-    widgettetris.cpp
+    widgettetris.cpp \
+    tetrixpiece.cpp
 
 HEADERS  += \
     Widget.h \
     camera.h \
-    widgettetris.h
+    widgettetris.h \
+    tetrixpiece.h
 
 FORMS    += \
     widget.ui \
