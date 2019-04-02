@@ -1,117 +1,95 @@
-#include "widgettetris.h"
-#include "ui_widgettetris.h"
-#include "tetrixpiece.h"
-#include <GL/glu.h>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QDebug>
+/****************************************************************************
+**
+** Copyright (C) 2016 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the examples of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** BSD License Usage
+** Alternatively, you may use this file under the terms of the BSD license
+** as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of The Qt Company Ltd nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
 
-using namespace std;
+#include <QtWidgets>
 
-// Declarations des constantes
-const unsigned int WIN_WIDTH  = 600;
-const unsigned int WIN_HEIGHT = 600;
+#include "tetrixboard.h"
 
-WidgetTetris::WidgetTetris(QWidget *parent) :
-    QOpenGLWidget(parent),
-    ui(new Ui::WidgetTetris)
+//! [0]
+TetrixBoard::TetrixBoard(QWidget *parent)
+    : QFrame(parent)
 {
-    ui->setupUi(this);
-    resize(WIN_WIDTH,WIN_HEIGHT);
-    DrawGrille();
-
-    //
+    setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    setFocusPolicy(Qt::StrongFocus);
     isStarted = false;
     isPaused = false;
     clearBoard();
+
     nextPiece.setRandomShape();
 }
+//! [0]
 
-WidgetTetris::~WidgetTetris()
-{
-    delete ui;
-}
-
-void WidgetTetris::DrawGrille()
-{
-    for (int y = 0 ; y < 21; y++){
-        glBegin(GL_LINES);
-        glColor3f( 1.0f, 1.0f, 1.0f);
-        //vertex 1/2 for one line
-        glVertex3f(0.0f , y, 0.0f);
-        //vertex 2/2 for one line
-        glVertex3f(10.0f , y, 0.0f);
-        glEnd();
-    }
-
-    for (int x = 0 ; x < 11; x++){
-        glBegin(GL_LINES);
-        glColor3f( 1.0f, 1.0f, 1.0f);
-        //vertex 1/2 for one line
-        glVertex3f(x , 0.0f, 0.0f);
-        //vertex 2/2 for one line
-        glVertex3f(x , 20.0f, 0.0f);
-        glEnd();
-    }
-}
-
-void WidgetTetris::initializeGL(){
-
-    glClearColor(0.0f ,0.0f ,0.0f ,1.0f); // noir
-}
-
-void WidgetTetris::paintGL(){
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity( ); // La reinitialiser, on ne sait jamais
-    gluLookAt(5, 5, 15, // position de la caméra
-                5, 10, 0, // position du point que fixe la caméra
-                0, 1, 0); // vecteur vertical
-
-    // draw grille
-    DrawGrille();
-}
-
-// Fonction de redimensionnement
-void WidgetTetris::resizeGL(int width, int height)
-{
-    // Definition du viewport (zone d'affichage)
-    glViewport(0, 0, width, height);
-
-    // Definition de la matrice de projection
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    if(width != 0)
-        gluPerspective(80, (double)WIN_WIDTH/WIN_HEIGHT, 0.1f, 50.0f); //changer le ratio
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
-
-//**************************************************************************
-
-
-void WidgetTetris::setNextPieceLabel(QLabel *label)
+//! [1]
+void TetrixBoard::setNextPieceLabel(QLabel *label)
 {
     nextPieceLabel = label;
 }
+//! [1]
 
-QSize WidgetTetris::sizeHint() const
+//! [2]
+QSize TetrixBoard::sizeHint() const
 {
     return QSize(BoardWidth * 15 + frameWidth() * 2,
                  BoardHeight * 15 + frameWidth() * 2);
 }
 
-QSize WidgetTetris::minimumSizeHint() const
+QSize TetrixBoard::minimumSizeHint() const
 //! [2] //! [3]
 {
     return QSize(BoardWidth * 5 + frameWidth() * 2,
                  BoardHeight * 5 + frameWidth() * 2);
 }
+//! [3]
 
-void WidgetTetris::start()
+//! [4]
+void TetrixBoard::start()
 {
     if (isPaused)
         return;
@@ -131,8 +109,10 @@ void WidgetTetris::start()
     newPiece();
     timer.start(timeoutTime(), this);
 }
+//! [4]
 
-void WidgetTetris::pause()
+//! [5]
+void TetrixBoard::pause()
 {
     if (!isStarted)
         return;
@@ -144,10 +124,12 @@ void WidgetTetris::pause()
         timer.start(timeoutTime(), this);
     }
     update();
+//! [5] //! [6]
 }
+//! [6]
 
-// changer en paintGL
-void WidgetTetris::paintEvent(QPaintEvent *event)
+//! [7]
+void TetrixBoard::paintEvent(QPaintEvent *event)
 {
     QFrame::paintEvent(event);
 
@@ -170,8 +152,11 @@ void WidgetTetris::paintEvent(QPaintEvent *event)
                 drawSquare(painter, rect.left() + j * squareWidth(),
                            boardTop + i * squareHeight(), shape);
         }
+//! [8] //! [9]
     }
+//! [9]
 
+//! [10]
     if (curPiece.shape() != NoShape) {
         for (int i = 0; i < 4; ++i) {
             int x = curX + curPiece.x(i);
@@ -180,18 +165,22 @@ void WidgetTetris::paintEvent(QPaintEvent *event)
                        boardTop + (BoardHeight - y - 1) * squareHeight(),
                        curPiece.shape());
         }
+//! [10] //! [11]
     }
+//! [11] //! [12]
 }
+//! [12]
 
-
-/*
+//! [13]
 void TetrixBoard::keyPressEvent(QKeyEvent *event)
 {
     if (!isStarted || isPaused || curPiece.shape() == NoShape) {
         QFrame::keyPressEvent(event);
         return;
     }
+//! [13]
 
+//! [14]
     switch (event->key()) {
     case Qt::Key_Left:
         tryMove(curPiece, curX - 1, curY);
@@ -214,10 +203,11 @@ void TetrixBoard::keyPressEvent(QKeyEvent *event)
     default:
         QFrame::keyPressEvent(event);
     }
-}*/
+//! [14]
+}
 
 //! [15]
-void WidgetTetris::timerEvent(QTimerEvent *event)
+void TetrixBoard::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == timer.timerId()) {
         if (isWaitingAfterLine) {
@@ -228,18 +218,23 @@ void WidgetTetris::timerEvent(QTimerEvent *event)
             oneLineDown();
         }
     } else {
-        //QFrame::timerEvent(event);
+        QFrame::timerEvent(event);
+//! [15] //! [16]
     }
+//! [16] //! [17]
 }
+//! [17]
 
-
-void WidgetTetris::clearBoard()
+//! [18]
+void TetrixBoard::clearBoard()
 {
     for (int i = 0; i < BoardHeight * BoardWidth; ++i)
         board[i] = NoShape;
 }
+//! [18]
 
-void WidgetTetris::dropDown()
+//! [19]
+void TetrixBoard::dropDown()
 {
     int dropHeight = 0;
     int newY = curY;
@@ -250,9 +245,12 @@ void WidgetTetris::dropDown()
         ++dropHeight;
     }
     pieceDropped(dropHeight);
+//! [19] //! [20]
 }
+//! [20]
 
-void WidgetTetris::oneLineDown()
+//! [21]
+void TetrixBoard::oneLineDown()
 {
     if (!tryMove(curPiece, curX, curY - 1))
         pieceDropped(0);
@@ -260,7 +258,7 @@ void WidgetTetris::oneLineDown()
 //! [21]
 
 //! [22]
-void WidgetTetris::pieceDropped(int dropHeight)
+void TetrixBoard::pieceDropped(int dropHeight)
 {
     for (int i = 0; i < 4; ++i) {
         int x = curX + curPiece.x(i);
@@ -281,9 +279,12 @@ void WidgetTetris::pieceDropped(int dropHeight)
 
     if (!isWaitingAfterLine)
         newPiece();
+//! [22] //! [23]
 }
+//! [23]
 
-void WidgetTetris::removeFullLines()
+//! [24]
+void TetrixBoard::removeFullLines()
 {
     int numFullLines = 0;
 
@@ -298,16 +299,21 @@ void WidgetTetris::removeFullLines()
         }
 
         if (lineIsFull) {
+//! [24] //! [25]
             ++numFullLines;
             for (int k = i; k < BoardHeight - 1; ++k) {
                 for (int j = 0; j < BoardWidth; ++j)
                     shapeAt(j, k) = shapeAt(j, k + 1);
             }
+//! [25] //! [26]
             for (int j = 0; j < BoardWidth; ++j)
                 shapeAt(j, BoardHeight - 1) = NoShape;
         }
+//! [26] //! [27]
     }
+//! [27]
 
+//! [28]
     if (numFullLines > 0) {
         numLinesRemoved += numFullLines;
         score += 10 * numFullLines;
@@ -319,10 +325,12 @@ void WidgetTetris::removeFullLines()
         curPiece.setShape(NoShape);
         update();
     }
-
+//! [28] //! [29]
 }
+//! [29]
 
-void WidgetTetris::newPiece()
+//! [30]
+void TetrixBoard::newPiece()
 {
     curPiece = nextPiece;
     nextPiece.setRandomShape();
@@ -340,7 +348,7 @@ void WidgetTetris::newPiece()
 //! [31]
 
 //! [32]
-void WidgetTetris::showNextPiece()
+void TetrixBoard::showNextPiece()
 {
     if (!nextPieceLabel)
         return;
@@ -361,9 +369,10 @@ void WidgetTetris::showNextPiece()
     nextPieceLabel->setPixmap(pixmap);
 //! [32] //! [33]
 }
+//! [33]
 
-
-bool WidgetTetris::tryMove(const TetrixPiece &newPiece, int newX, int newY)
+//! [34]
+bool TetrixBoard::tryMove(const TetrixPiece &newPiece, int newX, int newY)
 {
     for (int i = 0; i < 4; ++i) {
         int x = newX + newPiece.x(i);
@@ -373,22 +382,25 @@ bool WidgetTetris::tryMove(const TetrixPiece &newPiece, int newX, int newY)
         if (shapeAt(x, y) != NoShape)
             return false;
     }
+//! [34]
 
+//! [35]
     curPiece = newPiece;
     curX = newX;
     curY = newY;
     update();
     return true;
 }
+//! [35]
 
-void WidgetTetris::drawCube(QPainter &painter, int x, int y, TetrixShape shape)
+//! [36]
+void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
 {
     static const QRgb colorTable[8] = {
         0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
         0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00
     };
 
-    /*
     QColor color = colorTable[int(shape)];
     painter.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2,
                      color);
@@ -402,7 +414,5 @@ void WidgetTetris::drawCube(QPainter &painter, int x, int y, TetrixShape shape)
                      x + squareWidth() - 1, y + squareHeight() - 1);
     painter.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
                      x + squareWidth() - 1, y + 1);
-    */
 }
-
-
+//! [36]
