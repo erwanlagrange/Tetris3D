@@ -415,13 +415,13 @@ void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
 }
 
 void TetrixBoard::setBackGroundColor(){
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(1.0, 0.0, 0.0, 1.0);
 }
 
 void TetrixBoard::initializeGL()
 {
     // Reglage de la couleur de fond
-    this->setBackGroundColor();
+    glClearColor(1.0,0.0, 0.0,1.0);
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -437,6 +437,7 @@ void TetrixBoard::resizeGL(int width, int height)
 void TetrixBoard::paintGL()
 {
 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(5.0f, 4.0f, 16.0f, 5.0f, 10.0f, 0.0f, 0.0f,1.0f, 0.0f);
