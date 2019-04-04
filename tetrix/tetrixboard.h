@@ -12,7 +12,8 @@ QT_BEGIN_NAMESPACE
 class QLabel;
 QT_END_NAMESPACE
 
-//! [0]
+
+
 class TetrixBoard : public QGLWidget
 {
     Q_OBJECT
@@ -21,8 +22,9 @@ public:
     TetrixBoard(QWidget *parent = 0);
 
     void setNextPieceLabel(QLabel *label);
-    QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
+    void setBackGroundColor();
+    //QSize sizeHint() const override;
+    //QSize minimumSizeHint() const override;
 
 public slots:
     void start();
@@ -34,6 +36,15 @@ signals:
     void linesRemovedChanged(int numLines);
 
 protected:
+    // Fonction d'initialisation
+    void initializeGL();
+
+    // Fonction de redimensionnement
+    void resizeGL(int width, int height);
+
+    // Fonction d'affichage
+    void paintGL();
+
     void paintEvent(QPaintEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void timerEvent(QTimerEvent *event) override;

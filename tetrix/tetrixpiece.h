@@ -58,6 +58,7 @@ enum TetrixShape { NoShape, ZShape, SShape, LineShape, TShape, SquareShape,
 class TetrixPiece
 {
 public:
+
     TetrixPiece() { setShape(NoShape); }
 
     void setRandomShape();

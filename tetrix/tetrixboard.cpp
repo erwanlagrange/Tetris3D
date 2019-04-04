@@ -49,12 +49,17 @@
 ****************************************************************************/
 
 #include <QtWidgets>
+#include<GL/glu.h>
 
 #include "tetrixboard.h"
+
+//const unsigned int WIN_WIDTH  = 900;
+//const unsigned int WIN_HEIGHT = 1600;
 
 TetrixBoard::TetrixBoard(QWidget *parent)
     : QGLWidget (parent)
 {
+    //setFixedSize(WIN_WIDTH, WIN_HEIGHT);
     //setFrameStyle(QFrame::Panel | QFrame::Sunken);
     setFocusPolicy(Qt::StrongFocus);
     isStarted = false;
@@ -126,7 +131,7 @@ void TetrixBoard::paintEvent(QPaintEvent *event)
 {
     QGLWidget::paintEvent(event);
 
-    QPainter painter(this);
+   /* QPainter painter(this);
     QRect rect = contentsRect();
 //! [7]
 
@@ -160,7 +165,7 @@ void TetrixBoard::paintEvent(QPaintEvent *event)
         }
 //! [10] //! [11]
     }
-//! [11] //! [12]
+//! [11] //! [12]*/
 }
 //! [12]
 
@@ -408,4 +413,45 @@ void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
     painter.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
                      x + squareWidth() - 1, y + 1);
 }
-//! [36]
+
+void TetrixBoard::setBackGroundColor(){
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+}
+
+void TetrixBoard::initializeGL()
+{
+    // Reglage de la couleur de fond
+    this->setBackGroundColor();
+
+    glEnable(GL_DEPTH_TEST);
+}
+
+void TetrixBoard::resizeGL(int width, int height)
+{
+    const float ASPECT_RATIO = static_cast<float>(width)/height;
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(80.0f, ASPECT_RATIO, 0.1,40.0f);
+
+}
+void TetrixBoard::paintGL()
+{
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(5.0f, 4.0f, 16.0f, 5.0f, 10.0f, 0.0f, 0.0f,1.0f, 0.0f);
+
+
+    glBegin(GL_LINES);
+    for(int x= 0; x < 11 ; x++)
+    {
+        glVertex3f(0, x, 0);
+        glVertex3f(20, x, 0);
+    }
+    for (int y = 0; y < 21 ; y++)
+    {
+        glVertex3f(0, y, 0);
+        glVertex3f(10, y, 0);
+    }
+    glEnd();
+}
