@@ -67,6 +67,7 @@ private:
     void showNextPiece();
     bool tryMove(const TetrixPiece &newPiece, int newX, int newY);
     void drawSquare(QPainter &painter, int x, int y, TetrixShape shape);
+    void drawCube(int x, int y, TetrixShape shape);
 
     QBasicTimer timer;
     QPointer<QLabel> nextPieceLabel;
