@@ -62,14 +62,14 @@ TetrixWindow::TetrixWindow()
 
     nextPieceLabel = new QLabel;
     nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
-    nextPieceLabel->setAlignment(Qt::AlignTop);
+    nextPieceLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     board->setNextPieceLabel(nextPieceLabel);
 
 //! [0.camera]
 
     cameraLabel = new QLabel;
     //cameraLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
-    cameraLabel->setAlignment(Qt::AlignCenter);
+    cameraLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
     board->setCameraLabel(cameraLabel);
 
 //! [1]
@@ -121,7 +121,7 @@ TetrixWindow::TetrixWindow()
     layout->addWidget(createLabel(tr("LEVEL")), 4, 0);
     layout->addWidget(levelLcd, 5, 0);
     layout->addWidget(startButton, 6, 0);
-    layout->addWidget(board, 0, 1, 6, 1);
+    layout->addWidget(board, 0, 1, 7, 1);
     layout->addWidget(createLabel(tr("SCORE")), 0, 2);
     layout->addWidget(scoreLcd, 1, 2);
     layout->addWidget(createLabel(tr("LINES REMOVED")), 2, 2);
@@ -130,8 +130,8 @@ TetrixWindow::TetrixWindow()
     layout->addWidget(pauseButton, 5, 2);
     setLayout(layout);
 
-    setWindowTitle(tr("Tetrix"));
-    resize(550, 370);
+    setWindowTitle(tr("Tetrax"));
+    resize(850, 575);
 }
 //! [6]
 

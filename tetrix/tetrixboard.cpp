@@ -86,18 +86,18 @@ TetrixBoard::TetrixBoard(QGLWidget *parent)
 
     cap = VideoCapture(0);
 
-    int frameWidth = 60;
-    int frameHeight = 30;
+    /*int frameWidth = 200;
+    int frameHeight = 100;
 
     cap.set(CV_CAP_PROP_FRAME_WIDTH,frameWidth);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT,frameHeight);
+    cap.set(CV_CAP_PROP_FRAME_HEIGHT,frameHeight);*/
 
     if(!cap.isOpened())  // check if we succeeded
     {
         cerr<<"Error openning the default camera"<<endl;
     }
 
-    if( !face_cascade.load( "../TestWebCamQt/fist_v3.xml" ) )
+    if(!face_cascade.load( "../tetrix/fist_v3.xml" ))
     {
         cerr<<"Error loading haarcascade"<<endl;
     }
@@ -529,19 +529,47 @@ void TetrixBoard::updatePicture()
             rectangle(frame,fist[i],Scalar(0,255,0),2);
     }
 
-
     cvtColor(frame, frame_gray,CV_BGR2RGB);
     QImage image1= QImage((uchar*) frame_gray.data, frame_gray.cols, frame_gray.rows, frame_gray.step, QImage::Format_RGB888);
 
     //show Qimage using QLabel
-
+    //cameraLabel->resize(200,100);
     cameraLabel->setPixmap(QPixmap::fromImage(image1));
     cameraLabel->show();
-
     positionMain();
 }
 
 void TetrixBoard::positionMain()
 {
+    if(fist.size() == 2)  {
+        int centreX1 = (fist[0].br().x + fist[0].tl().x)/2;
+        int centreY1 = (fist[0].br().y + fist[0].tl().y)/2;
+        int centreX2 = (fist[1].br().x + fist[1].tl().x)/2;
+        int centreY2 = (fist[1].br().y + fist[1].tl().y)/2;
 
+        if (abs(centreX1 - centreX2) < 100 && abs(centreY1 - centreY2) < 30)
+        {
+           qDebug()<<"touche";
+           direction = "touche";
+        }
+
+        else {
+            if (centreY1 > 175 && centreY2 < 125)
+                    {
+                       direction = "gauche";
+                       qDebug()<<"gauche";
+                    }
+            else{
+                if (centreY1 < 125 && centreY2 > 175)
+                {
+                   direction = "droite";
+                   qDebug()<<"droite";
+                }
+                else{
+                    direction = "";
+                    qDebug()<<"rien";
+                }
+            }
+        }
+    }
 }

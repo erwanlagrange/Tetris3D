@@ -103,6 +103,7 @@ private:
     VideoCapture cap;
     CascadeClassifier face_cascade;
     vector<Rect> fist;
+    QString direction;
 };
 
 //! [1]
