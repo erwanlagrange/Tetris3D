@@ -51,12 +51,26 @@
 #include <QtWidgets>
 #include<GL/glu.h>
 
+#include "opencv2/opencv.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include <opencv2/objdetect/objdetect.hpp>
+
+#include <QString>
+#include <QTimer>
+#include <cstdio>
+#include <iostream>
+#include <QDebug>
+
 #include "tetrixboard.h"
+
+using namespace cv;
+using namespace std;
 
 //const unsigned int WIN_WIDTH  = 900;
 //const unsigned int WIN_HEIGHT = 1600;
 
-TetrixBoard::TetrixBoard(QWidget *parent)
+TetrixBoard::TetrixBoard(QGLWidget *parent)
     : QGLWidget (parent)
 {
     //setFixedSize(WIN_WIDTH, WIN_HEIGHT);
@@ -67,11 +81,40 @@ TetrixBoard::TetrixBoard(QWidget *parent)
     clearBoard();
 
     nextPiece.setRandomShape();
+
+    // camera
+
+    cap = VideoCapture(0);
+
+    int frameWidth = 60;
+    int frameHeight = 30;
+
+    cap.set(CV_CAP_PROP_FRAME_WIDTH,frameWidth);
+    cap.set(CV_CAP_PROP_FRAME_HEIGHT,frameHeight);
+
+    if(!cap.isOpened())  // check if we succeeded
+    {
+        cerr<<"Error openning the default camera"<<endl;
+    }
+
+    if( !face_cascade.load( "../TestWebCamQt/fist_v3.xml" ) )
+    {
+        cerr<<"Error loading haarcascade"<<endl;
+    }
+
+    timerCamera = new QTimer(this);
+    connect(timerCamera, SIGNAL(timeout()), this, SLOT(updatePicture()));
+    timerCamera->start(16);
 }
 
 void TetrixBoard::setNextPieceLabel(QLabel *label)
 {
     nextPieceLabel = label;
+}
+
+void TetrixBoard::setCameraLabel(QLabel *label)
+{
+    cameraLabel = label;
 }
 
 /*QSize TetrixBoard::sizeHint() const
@@ -447,7 +490,9 @@ void TetrixBoard::paintGL()
     //gluPerspective(80.0f, width()/height(), 0.1f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(50, 100, 250, 50, 100, 0, 0, 1, 1);
+    gluLookAt(50, 25, 200, // position de la caméra
+                50, 100, 0, // position du point que fixe la caméra
+                0, 1, 0); // vecteur vertical
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f,0.0f);
@@ -462,4 +507,41 @@ void TetrixBoard::paintGL()
         glVertex3f(100,10*y, 0 );
     }
     glEnd();
+}
+
+void TetrixBoard::updatePicture()
+{
+    Mat frame,frame_gray;
+    // Get frame
+    cap >> frame;
+
+    // Mirror effect
+    cv::flip(frame,frame,1);
+    // Convert to gray
+    cv::cvtColor(frame,frame_gray,COLOR_BGR2GRAY);
+    //-- Detect fist
+    face_cascade.detectMultiScale( frame_gray, fist, 1.1, 4, 0|CV_HAAR_SCALE_IMAGE, Size(60, 60) );
+
+    if (fist.size()>0)
+    {
+        // Draw green rectangle
+        for (int i=0;i<(int)fist.size();i++)
+            rectangle(frame,fist[i],Scalar(0,255,0),2);
+    }
+
+
+    cvtColor(frame, frame_gray,CV_BGR2RGB);
+    QImage image1= QImage((uchar*) frame_gray.data, frame_gray.cols, frame_gray.rows, frame_gray.step, QImage::Format_RGB888);
+
+    //show Qimage using QLabel
+
+    cameraLabel->setPixmap(QPixmap::fromImage(image1));
+    cameraLabel->show();
+
+    positionMain();
+}
+
+void TetrixBoard::positionMain()
+{
+
 }

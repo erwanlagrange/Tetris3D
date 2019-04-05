@@ -74,6 +74,7 @@ private:
 
     TetrixBoard *board;
     QLabel *nextPieceLabel;
+    QLabel *cameraLabel;
     QLCDNumber *scoreLcd;
     QLCDNumber *levelLcd;
     QLCDNumber *linesLcd;

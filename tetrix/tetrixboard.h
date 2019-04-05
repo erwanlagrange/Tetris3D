@@ -1,27 +1,36 @@
 #ifndef TETRIXBOARD_H
 #define TETRIXBOARD_H
 
+#include "tetrixpiece.h"
+
 #include <QBasicTimer>
 #include <QFrame>
 #include <QGLWidget>
 #include <QPointer>
 
-#include "tetrixpiece.h"
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
+
+#include <bits/stl_vector.h>
+#include <bits/stl_vector.h>
+
+using namespace cv;
+using namespace std;
 
 QT_BEGIN_NAMESPACE
 class QLabel;
 QT_END_NAMESPACE
-
-
 
 class TetrixBoard : public QGLWidget
 {
     Q_OBJECT
 
 public:
-    TetrixBoard(QWidget *parent = nullptr);
+    TetrixBoard(QGLWidget *parent = nullptr);
 
     void setNextPieceLabel(QLabel *label);
+    void setCameraLabel(QLabel *label);
     void setBackGroundColor();
     //QSize sizeHint() const override;
     //QSize minimumSizeHint() const override;
@@ -29,6 +38,9 @@ public:
 public slots:
     void start();
     void pause();
+    // camera
+    void updatePicture();
+    void positionMain();
 
 signals:
     void scoreChanged(int score);
@@ -37,13 +49,13 @@ signals:
 
 protected:
     // Fonction d'initialisation
-    void initializeGL();
+    void initializeGL() override;
 
     // Fonction de redimensionnement
-    void resizeGL(int width, int height);
+    void resizeGL(int width, int height) override;
 
     // Fonction d'affichage
-    void paintGL();
+    void paintGL() override;
 
     void paintEvent(QPaintEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
@@ -70,6 +82,7 @@ private:
 
     QBasicTimer timer;
     QPointer<QLabel> nextPieceLabel;
+    QPointer<QLabel> cameraLabel;
     bool isStarted;
     bool isPaused;
     bool isWaitingAfterLine;
@@ -82,7 +95,16 @@ private:
     int score;
     int level;
     TetrixShape board[BoardWidth * BoardHeight];
+
+    // camera
+
+    VideoCapture *webCam_;
+    QTimer * timerCamera;
+    VideoCapture cap;
+    CascadeClassifier face_cascade;
+    vector<Rect> fist;
 };
+
 //! [1]
 
 #endif

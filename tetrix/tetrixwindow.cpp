@@ -52,6 +52,7 @@
 
 #include "tetrixboard.h"
 #include "tetrixwindow.h"
+#include "camera.h"
 
 //! [0]
 TetrixWindow::TetrixWindow()
@@ -61,8 +62,15 @@ TetrixWindow::TetrixWindow()
 
     nextPieceLabel = new QLabel;
     nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
-    nextPieceLabel->setAlignment(Qt::AlignCenter);
+    nextPieceLabel->setAlignment(Qt::AlignTop);
     board->setNextPieceLabel(nextPieceLabel);
+
+//! [0.camera]
+
+    cameraLabel = new QLabel;
+    //cameraLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
+    cameraLabel->setAlignment(Qt::AlignCenter);
+    board->setCameraLabel(cameraLabel);
 
 //! [1]
     scoreLcd = new QLCDNumber(5);
@@ -108,9 +116,11 @@ TetrixWindow::TetrixWindow()
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(createLabel(tr("NEXT")), 0, 0);
     layout->addWidget(nextPieceLabel, 1, 0);
-    layout->addWidget(createLabel(tr("LEVEL")), 2, 0);
-    layout->addWidget(levelLcd, 3, 0);
-    layout->addWidget(startButton, 4, 0);
+    layout->addWidget(createLabel(tr("CAMERA")), 2, 0);
+    layout->addWidget(cameraLabel, 3, 0); // Camera
+    layout->addWidget(createLabel(tr("LEVEL")), 4, 0);
+    layout->addWidget(levelLcd, 5, 0);
+    layout->addWidget(startButton, 6, 0);
     layout->addWidget(board, 0, 1, 6, 1);
     layout->addWidget(createLabel(tr("SCORE")), 0, 2);
     layout->addWidget(scoreLcd, 1, 2);
