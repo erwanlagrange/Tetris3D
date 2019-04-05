@@ -64,17 +64,18 @@
 
 #include "tetrixboard.h"
 
+<<<<<<< HEAD
 using namespace cv;
 using namespace std;
 
 //const unsigned int WIN_WIDTH  = 900;
 //const unsigned int WIN_HEIGHT = 1600;
+=======
+>>>>>>> 7383a50eddd3a4e792b61e8e74d8baec5429299a
 
 TetrixBoard::TetrixBoard(QGLWidget *parent)
     : QGLWidget (parent)
 {
-    //setFixedSize(WIN_WIDTH, WIN_HEIGHT);
-    //setFrameStyle(QFrame::Panel | QFrame::Sunken);
     setFocusPolicy(Qt::StrongFocus);
     isStarted = false;
     isPaused = false;
@@ -112,6 +113,7 @@ void TetrixBoard::setNextPieceLabel(QLabel *label)
     nextPieceLabel = label;
 }
 
+<<<<<<< HEAD
 void TetrixBoard::setCameraLabel(QLabel *label)
 {
     cameraLabel = label;
@@ -129,6 +131,8 @@ QSize TetrixBoard::minimumSizeHint() const
     return QSize(BoardWidth * 5 + frameWidth() * 2,
                  BoardHeight * 5 + frameWidth() * 2);
 }*/
+=======
+>>>>>>> 7383a50eddd3a4e792b61e8e74d8baec5429299a
 
 void TetrixBoard::start()
 {
@@ -490,9 +494,13 @@ void TetrixBoard::paintGL()
     //gluPerspective(80.0f, width()/height(), 0.1f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+<<<<<<< HEAD
     gluLookAt(50, 25, 200, // position de la caméra
                 50, 100, 0, // position du point que fixe la caméra
                 0, 1, 0); // vecteur vertical
+=======
+    gluLookAt(50, 100, 30, 105, 105, 5, 0, 1, 1);
+>>>>>>> 7383a50eddd3a4e792b61e8e74d8baec5429299a
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f,0.0f);
@@ -507,6 +515,7 @@ void TetrixBoard::paintGL()
         glVertex3f(100,10*y, 0 );
     }
     glEnd();
+
 }
 
 void TetrixBoard::updatePicture()
