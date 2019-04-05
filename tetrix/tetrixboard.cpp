@@ -381,38 +381,39 @@ void TetrixBoard::drawCube(int x, int y, TetrixShape shape)
         0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00
     };
 
+    glColor3f(1.0f, 0.0f,0.0f);
     glBegin(GL_QUADS);
-    glVertex3f(x*10, y*10, 0);
-    glVertex3f(x*10, y*10+10, 0);
-    glVertex3f(x*10+10, y*10+10, 0);
-    glVertex3f(x*10+10, y*10, 0);
 
-    glVertex3f(x*10, y*10, 10);
-    glVertex3f(x*10, y*10+10, 10);
-    glVertex3f(x*10+10, y*10+10, 10);
-    glVertex3f(x*10+10, y*10, 10);
+    glVertex3f(x*10+10, y*10+10, 5.0f);
+    glVertex3f(x*10, y*10+10,5.0f);
+    glVertex3f(x*10, y*10,5.0f);
+    glVertex3f(x*10+10, y*10,5.0f);
 
-    glVertex3f(x*10, y*10, 0);
-    glVertex3f(x*10+10, y*10, 0);
-    glVertex3f(x*10+10, y*10, 5);
-    glVertex3f(x*10, y*10, 5);
+    glVertex3f(x*10+10, y*10+10,0);
+    glVertex3f(x*10+10, y*10,0);
+    glVertex3f( x*10, y*10,0);
+    glVertex3f( x*10, y*10+10,0);
 
-    glVertex3f(x*10, y*10+10, 0);
-    glVertex3f(x*10+10, y*10+10, 0);
-    glVertex3f(x*10+10, y*10+10, 5);
-    glVertex3f(x*10, y*10, 5);
+    glVertex3f(x*10+10, y*10,0);
+    glVertex3f(x*10+10, y*10,5);
+    glVertex3f(x*10,y*10,5.0f);
+    glVertex3f(x*10, y*10,0);
 
-    glVertex3f(x*10, y*10, 0);
-    glVertex3f(x*10, y*10+10, 0);
-    glVertex3f(x*10, y*10+10, 5);
-    glVertex3f(x*10, y*10, 5);
+    glVertex3f(x*10+10, y*10+10,0);
+    glVertex3f(x*10, y*10+10,0);
+    glVertex3f(x*10, y*10+10,5.0f);
+    glVertex3f(x*10+10, y*10+10,5.0f);
 
-    glVertex3f(x*10+10, y*10, 0);
-    glVertex3f(x*10+10, y*10+10, 0);
-    glVertex3f(x*10+10, y*10+10, 5);
-    glVertex3f(x*10, y*10, 5);
+    glVertex3f(x*10, y*10+10,0);
+    glVertex3f(x*10, y*10,0);
+    glVertex3f(x*10, y*10,5.0f);
+    glVertex3f(x*10, y*10+10,5.0f);
+
+    glVertex3f(x*10+10, y*10+10,0);
+    glVertex3f(x*10+10, y*10+10,5.0f);
+    glVertex3f(x*10+10, y*10,5.0f);
+    glVertex3f(x*10+10, y*10,0);
     glEnd();
-
 }
 //! [36]
 void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
@@ -470,7 +471,7 @@ void TetrixBoard::paintGL()
     //gluPerspective(80.0f, width()/height(), 0.1f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(50, 100, 250, 50, 100, 0, 0, 1, 1);
+    gluLookAt(50, 100, 30, 105, 105, 5, 0, 1, 1);
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f,0.0f);
@@ -485,40 +486,5 @@ void TetrixBoard::paintGL()
         glVertex3f(100,10*y, 0 );
     }
     glEnd();
-
-    QPainter painter(this);
-        QRect rect = contentsRect();
-    //! [7]
-
-        if (isPaused) {
-            painter.drawText(rect, Qt::AlignCenter, tr("Pause"));
-            return;
-        }
-
-    //! [8]
-        int boardTop = rect.bottom() - BoardHeight*squareHeight();
-
-        for (int i = 0; i < BoardHeight; ++i) {
-            for (int j = 0; j < BoardWidth; ++j) {
-                TetrixShape shape = shapeAt(j, BoardHeight - i - 1);
-                if (shape != NoShape)
-                    drawSquare(painter, rect.left() + j * squareWidth(),
-                               boardTop + i * squareHeight(), shape);
-            }
-    //! [8] //! [9]
-        }
-    //! [9]
-
-    //! [10]
-        if (curPiece.shape() != NoShape) {
-            for (int i = 0; i < 4; ++i) {
-                int x = curX + curPiece.x(i);
-                int y = curY - curPiece.y(i);
-                drawSquare(painter, rect.left() + x * squareWidth(),
-                           boardTop + (BoardHeight - y - 1) * squareHeight(),
-                           curPiece.shape());
-            }
-    //! [10] //! [11]
-        }
 
 }
