@@ -19,7 +19,7 @@ class TetrixBoard : public QGLWidget
     Q_OBJECT
 
 public:
-    TetrixBoard(QWidget *parent = 0);
+    TetrixBoard(QWidget *parent = nullptr);
 
     void setNextPieceLabel(QLabel *label);
     void setBackGroundColor();

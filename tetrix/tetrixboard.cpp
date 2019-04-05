@@ -421,38 +421,45 @@ void TetrixBoard::setBackGroundColor(){
 void TetrixBoard::initializeGL()
 {
     // Reglage de la couleur de fond
-    glClearColor(1.0,0.0, 0.0,1.0);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+    // Activation du zbuffer
     glEnable(GL_DEPTH_TEST);
 }
 
 void TetrixBoard::resizeGL(int width, int height)
 {
-    const float ASPECT_RATIO = static_cast<float>(width)/height;
+    // Definition du viewport (zone d'affichage)
+    glViewport(0, 0, width, height);
+    qInfo() << width;
+    qInfo() << height;
+    // Definition de la matrice de projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(80.0f, ASPECT_RATIO, 0.1,40.0f);
-
+    gluPerspective(80.0f, static_cast <float>(width)/height, 0.1f, 300.0f);
 }
+
 void TetrixBoard::paintGL()
 {
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glMatrixMode(GL_PROJECTION);
+    //glLoadIdentity();
+    //gluPerspective(80.0f, width()/height(), 0.1f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(5.0f, 4.0f, 16.0f, 5.0f, 10.0f, 0.0f, 0.0f,1.0f, 0.0f);
-
+    gluLookAt(50, 100, 250, 50, 100, 0, 0, 1, 1);
 
     glBegin(GL_LINES);
-    for(int x= 0; x < 11 ; x++)
+    glColor3f(1.0f, 0.0f,0.0f);
+    for(int x = 0; x<11; x++)
     {
-        glVertex3f(0, x, 0);
-        glVertex3f(20, x, 0);
+        glVertex3f(10*x, 0, 0 );
+        glVertex3f(10*x, 200, 0 );
     }
-    for (int y = 0; y < 21 ; y++)
+    for(int y = 0; y<21; y++)
     {
-        glVertex3f(0, y, 0);
-        glVertex3f(10, y, 0);
+        glVertex3f(0, 10*y, 0 );
+        glVertex3f(100,10*y, 0 );
     }
     glEnd();
 }
