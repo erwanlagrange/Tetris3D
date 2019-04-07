@@ -70,6 +70,10 @@ using namespace std;
 
 //const unsigned int WIN_WIDTH  = 900;
 //const unsigned int WIN_HEIGHT = 1600;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
 
 TetrixBoard::TetrixBoard(QGLWidget *parent)
     : QGLWidget (parent)
@@ -111,6 +115,10 @@ void TetrixBoard::setNextPieceLabel(QLabel *label)
     nextPieceLabel = label;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
 void TetrixBoard::setCameraLabel(QLabel *label)
 {
     cameraLabel = label;
@@ -128,6 +136,10 @@ QSize TetrixBoard::minimumSizeHint() const
     return QSize(BoardWidth * 5 + frameWidth() * 2,
                  BoardHeight * 5 + frameWidth() * 2);
 }*/
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
 
 void TetrixBoard::start()
 {
@@ -148,6 +160,7 @@ void TetrixBoard::start()
 
     newPiece();
     timer.start(timeoutTime(), this);
+    updateGL();
 }
 //! [4]
 
@@ -163,7 +176,7 @@ void TetrixBoard::pause()
     } else {
         timer.start(timeoutTime(), this);
     }
-    update();
+    updateGL();
 //! [5] //! [6]
 }
 //! [6]
@@ -363,7 +376,7 @@ void TetrixBoard::removeFullLines()
         timer.start(500, this);
         isWaitingAfterLine = true;
         curPiece.setShape(NoShape);
-        update();
+        updateGL();
     }
 //! [28] //! [29]
 }
@@ -374,7 +387,7 @@ void TetrixBoard::newPiece()
 {
     curPiece = nextPiece;
     nextPiece.setRandomShape();
-    showNextPiece();
+    //showNextPiece();
     curX = BoardWidth / 2 + 1;
     curY = BoardHeight - 1 + curPiece.minY();
 
@@ -388,7 +401,7 @@ void TetrixBoard::newPiece()
 //! [31]
 
 //! [32]
-void TetrixBoard::showNextPiece()
+/*void TetrixBoard::showNextPiece()
 {
     if (!nextPieceLabel)
         return;
@@ -408,7 +421,7 @@ void TetrixBoard::showNextPiece()
     }
     nextPieceLabel->setPixmap(pixmap);
 //! [32] //! [33]
-}
+}*/
 //! [33]
 
 //! [34]
@@ -428,7 +441,7 @@ bool TetrixBoard::tryMove(const TetrixPiece &newPiece, int newX, int newY)
     curPiece = newPiece;
     curX = newX;
     curY = newY;
-    update();
+    updateGL();
     return true;
 }
 //! [35]
@@ -474,7 +487,7 @@ void TetrixBoard::drawCube(int x, int y, TetrixShape shape)
     glEnd();
 }
 //! [36]
-void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
+/*void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
 {
     static const QRgb colorTable[8] = {
         0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
@@ -494,7 +507,48 @@ void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
                      x + squareWidth() - 1, y + squareHeight() - 1);
     painter.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
                      x + squareWidth() - 1, y + 1);
+}*/
+
+void TetrixBoard::drawCube(int x, int y, TetrixShape shape)
+{
+    static const QRgb colorTable[8] = {
+        0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
+        0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00
+    };
+
+    glVertex3f(x*10,y*10 + 10, 0);
+    glVertex3f(x*10,y*10,0);
+    glVertex3f(x*10 + 10, y*10,0);
+    glVertex3f(x*10 + 10, y*10+ 10,0);
+
+    glVertex3f(x*10 + 10, y*10+ 10,0);
+    glVertex3f(x*10 + 10, y*10+ 10,5 );
+    glVertex3f(x*10 , y*10+ 10,5  );
+    glVertex3f(x*10 , y*10+ 10, 0);
+
+    glVertex3f(x*10,y*10 + 10, 5);
+    glVertex3f(x*10,y*10,5);
+    glVertex3f(x*10 + 10, y*10,5);
+    glVertex3f(x*10 + 10, y*10+ 10,5);
+
+    glVertex3f(x*10 + 10, y*10,0);
+    glVertex3f(x*10 + 10, y*10,5 );
+    glVertex3f(x*10 , y*10,5  );
+    glVertex3f(x*10 , y*10, 0);
+
+    glVertex3f(x*10 + 10, y*10+10,0);
+    glVertex3f(x*10 + 10, y*10+10,5 );
+    glVertex3f(x*10+ 10, y*10,5  );
+    glVertex3f(x*10 +10, y*10, 0);
+
+    glVertex3f(x*10, y*10+10,0);
+    glVertex3f(x*10, y*10+10,5 );
+    glVertex3f(x*10, y*10,5  );
+    glVertex3f(x*10, y*10, 0);
+
+
 }
+
 
 void TetrixBoard::setBackGroundColor(){
     glClearColor(1.0, 0.0, 0.0, 1.0);
@@ -513,8 +567,8 @@ void TetrixBoard::resizeGL(int width, int height)
 {
     // Definition du viewport (zone d'affichage)
     glViewport(0, 0, width, height);
-    qInfo() << width;
-    qInfo() << height;
+    //qInfo() << width;
+    //qInfo() << height;
     // Definition de la matrice de projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -529,9 +583,19 @@ void TetrixBoard::paintGL()
     //gluPerspective(80.0f, width()/height(), 0.1f, 100.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+<<<<<<< HEAD
     gluLookAt(50, 25, 200, // position de la caméra
                 50, 100, 0, // position du point que fixe la caméra
                 0, 1, 0); // vecteur vertical
+=======
+
+    gluLookAt(50, 25, 200, // position de la caméra
+                50, 100, 0, // position du point que fixe la caméra
+                0, 1, 0); // vecteur vertical
+
+    //gluLookAt(50, 100, 30, 105, 105, 5, 0, 1, 1);
+
+>>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f,0.0f);
@@ -544,6 +608,44 @@ void TetrixBoard::paintGL()
     {
         glVertex3f(0, 10*y, 0 );
         glVertex3f(100,10*y, 0 );
+    }
+    glEnd();
+    glLoadIdentity();
+    QRect rect = contentsRect();
+    int boardTop = rect.bottom() - BoardHeight*squareHeight();
+    glBegin(GL_QUADS);
+    glColor3f(0.0f,1.0f,0.0f);
+    glLoadIdentity();
+    for (int i = 0; i < BoardHeight; ++i)
+    {
+            for (int j = 0; j < BoardWidth; ++j)
+            {
+                //qInfo() << BoardHeight;
+                //qInfo() << BoardWidth;
+
+                TetrixShape shape = shapeAt(j, i -1);
+                qInfo() <<  i - 1;
+
+                if (shape != NoShape)
+                    drawCube( j , i , shape);
+
+            }
+            //qInfo() << curPiece.shape();
+            if (curPiece.shape() != NoShape)
+            {
+
+                   for (int i = 0; i < 4; ++i)
+                   {
+
+                       int x = curX + curPiece.x(i);
+                       int y = curY - curPiece.y(i);
+                       //qInfo() << x;
+                       //qInfo()<< (y - 1);
+                       //qInfo() << y;
+                       drawCube( x, (y - 1), curPiece.shape());
+                   }
+             }
+
     }
     glEnd();
 
