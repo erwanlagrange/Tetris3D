@@ -68,7 +68,7 @@ TetrixWindow::TetrixWindow()
 //! [0.camera]
 
     cameraLabel = new QLabel;
-    //cameraLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
+    cameraLabel->setFrameStyle(QFrame::Plain | QFrame::Raised);
     cameraLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
     board->setCameraLabel(cameraLabel);
 
