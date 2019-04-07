@@ -68,8 +68,8 @@ private:
 
     TetrixShape &shapeAt(int x, int y) { return board[(y * BoardWidth) + x]; }
     int timeoutTime() { return 1000 / (1 + level); }
-    int squareWidth() { return contentsRect().width() / BoardWidth; }
-    int squareHeight() { return contentsRect().height() / BoardHeight; }
+    int squareWidth() { return 100/ BoardWidth; }
+    int squareHeight() { return 200 / BoardHeight; }
     void clearBoard();
     void dropDown();
     void oneLineDown();
@@ -79,6 +79,7 @@ private:
     void showNextPiece();
     bool tryMove(const TetrixPiece &newPiece, int newX, int newY);
     void drawSquare(QPainter &painter, int x, int y, TetrixShape shape);
+    void drawCube(int x, int y, TetrixShape shape);
 
     QBasicTimer timer;
     QPointer<QLabel> nextPieceLabel;
