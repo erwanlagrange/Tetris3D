@@ -54,6 +54,7 @@
 #include "camera.h"
 
 #include <QFrame>
+#include <QGLWidget>
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -76,6 +77,9 @@ private:
 
     TetrixBoard *board;
     camera *cameraWidget;
+
+    QGLWidget *nextPieceWidget;
+
     QLabel *nextPieceLabel;
     QLabel *cameraLabel;
     QLCDNumber *scoreLcd;

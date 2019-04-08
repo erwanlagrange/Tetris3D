@@ -59,11 +59,14 @@ TetrixWindow::TetrixWindow()
 {
     board = new TetrixBoard;
     cameraWidget = new camera();
+    nextPieceWidget = new QGLWidget();
 
+
+    /*
     nextPieceLabel = new QLabel;
     nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
     nextPieceLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    board->setNextPieceLabel(nextPieceLabel);
+    board->setNextPieceLabel(nextPieceLabel);*/
 
     /*cameraLabel = new QLabel;
     cameraLabel->setFrameStyle(QFrame::Plain | QFrame::Raised);
@@ -101,7 +104,8 @@ TetrixWindow::TetrixWindow()
 
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(createLabel(tr("NEXT")), 0, 0);
-    layout->addWidget(nextPieceLabel, 1, 0);
+    //layout->addWidget(nextPieceLabel, 1, 0);
+    layout->addWidget(nextPieceWidget, 1, 0);
     layout->addWidget(createLabel(tr("CAMERA")), 2, 0);
     layout->addWidget(cameraWidget, 3, 0); // Camera
     layout->addWidget(createLabel(tr("LEVEL")), 4, 0);

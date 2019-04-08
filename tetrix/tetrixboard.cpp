@@ -84,6 +84,11 @@ void TetrixBoard::setNextPieceLabel(QLabel *label)
     nextPieceLabel = label;
 }
 
+void TetrixBoard::setNextPieceWidget(QGLWidget *Widget)
+{
+    nextPieceWidget = Widget;
+}
+
 void TetrixBoard::setCameraLabel(QLabel *label)
 {
     cameraLabel = label;
@@ -517,6 +522,7 @@ void TetrixBoard::paintGL()
                 drawCube(x,y, curPiece.shape());
             }
         }
+    showNextPiece();
 }
 
 void TetrixBoard::touche()
@@ -536,10 +542,10 @@ void TetrixBoard::gauche()
 
 void TetrixBoard::showNextPiece()
 {
-    if (!nextPieceLabel)
+    if (!nextPieceWidget)//if (!nextPieceLabel)
         return;
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -560,13 +566,13 @@ void TetrixBoard::showNextPiece()
 
     QPixmap pixmap(dx * squareWidth(), dy * squareHeight());
     QPainter painter(&pixmap);
-    painter.fillRect(pixmap.rect(), nextPieceLabel->palette().background());
+    painter.fillRect(pixmap.rect(), nextPieceWidget->palette().background());
 
     for (int i = 0; i < 4; ++i) {
         int x = nextPiece.x(i) - nextPiece.minX();
         int y = nextPiece.y(i) - nextPiece.minY();
         drawCube(x,y, nextPiece.shape());
     }
-    nextPieceLabel->setPixmap(pixmap);
+    //nextPieceWidget->setPixmap(pixmap);
 }
 

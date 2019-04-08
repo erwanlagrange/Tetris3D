@@ -77,7 +77,7 @@ void camera::updatePicture()
 
             //ui->label->setPixmap(QPixmap::fromImage(image1));
             //ui->label->show();
-            if(i==6){
+            if(i==5){
                positionMain();
                i = 0;
             }

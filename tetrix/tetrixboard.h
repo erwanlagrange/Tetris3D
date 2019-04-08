@@ -30,6 +30,9 @@ public:
     TetrixBoard(QGLWidget *parent = nullptr);
 
     void setNextPieceLabel(QLabel *label);
+
+    void setNextPieceWidget(QGLWidget *Widget);
+
     void setCameraLabel(QLabel *label);
     void setBackGroundColor();
     //QSize sizeHint() const override;
@@ -95,6 +98,8 @@ private:
     int score;
     int level;
     TetrixShape board[BoardWidth * BoardHeight];
+
+    QGLWidget *nextPieceWidget;
 };
 
 //! [1]
