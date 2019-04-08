@@ -51,6 +51,8 @@
 #ifndef TETRIXWINDOW_H
 #define TETRIXWINDOW_H
 
+#include "camera.h"
+
 #include <QFrame>
 #include <QWidget>
 
@@ -73,6 +75,7 @@ private:
     QLabel *createLabel(const QString &text);
 
     TetrixBoard *board;
+    camera *cameraWidget;
     QLabel *nextPieceLabel;
     QLabel *cameraLabel;
     QLCDNumber *scoreLcd;

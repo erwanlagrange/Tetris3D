@@ -14,7 +14,7 @@ using namespace cv;
 using namespace std;
 
 camera::camera(QWidget *parent) :
-    QWidget(parent)
+    QLabel(parent)
 {
     cap = VideoCapture(0);
 
@@ -29,7 +29,7 @@ camera::camera(QWidget *parent) :
         cerr<<"Error openning the default camera"<<endl;
     }
 
-    if( !face_cascade.load( "../TestWebCamQt/fist_v3.xml" ) )
+    if( !face_cascade.load( "../tetrix/fist_v3.xml" ) )
     {
         cerr<<"Error loading haarcascade"<<endl;
     }
@@ -70,9 +70,13 @@ void camera::updatePicture()
 
             //show Qimage using QLabel
 
+            this->setPixmap(QPixmap::fromImage(image1));
+            // Resize the label to fit the image
+            this->resize(this->pixmap()->size());
+
             //ui->label->setPixmap(QPixmap::fromImage(image1));
             //ui->label->show();
-            char res = positionMain();
+            positionMain();
     }
 
 char camera::positionMain()
@@ -91,22 +95,21 @@ char camera::positionMain()
         {
            qDebug()<<"touche";
            //ui->label_direction->setText("touche");
-           return  'c';
+           emit tourneCam();
         }
 
         if (centreY1 > 175 && centreY2 < 125)
         {
            qDebug()<<"gauche";
            //ui->label_direction->setText("gauche");
-           return  'g';
+           emit gaucheCam();
         }
 
         if (centreY1 < 125 && centreY2 > 175)
         {
            qDebug()<<"droite";
            //ui->label_direction->setText("droite");
-           return  'd';
+           emit droiteCam();
         }
     }
-
 }

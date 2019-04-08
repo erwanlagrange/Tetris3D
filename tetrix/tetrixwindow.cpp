@@ -58,66 +58,52 @@
 TetrixWindow::TetrixWindow()
 {
     board = new TetrixBoard;
-//! [0]
+    cameraWidget = new camera();
 
     nextPieceLabel = new QLabel;
     nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
     nextPieceLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     board->setNextPieceLabel(nextPieceLabel);
 
-//! [0.camera]
-
-    cameraLabel = new QLabel;
+    /*cameraLabel = new QLabel;
     cameraLabel->setFrameStyle(QFrame::Plain | QFrame::Raised);
     cameraLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
-    board->setCameraLabel(cameraLabel);
+    board->setCameraLabel(cameraLabel);*/
 
-//! [1]
     scoreLcd = new QLCDNumber(5);
     scoreLcd->setSegmentStyle(QLCDNumber::Filled);
-//! [1]
     levelLcd = new QLCDNumber(2);
     levelLcd->setSegmentStyle(QLCDNumber::Filled);
     linesLcd = new QLCDNumber(5);
     linesLcd->setSegmentStyle(QLCDNumber::Filled);
 
-//! [2]
     startButton = new QPushButton(tr("&Start"));
     startButton->setFocusPolicy(Qt::NoFocus);
     quitButton = new QPushButton(tr("&Quit"));
     quitButton->setFocusPolicy(Qt::NoFocus);
     pauseButton = new QPushButton(tr("&Pause"));
-//! [2] //! [3]
     pauseButton->setFocusPolicy(Qt::NoFocus);
-//! [3] //! [4]
 
     connect(startButton, &QPushButton::clicked, board, &TetrixBoard::start);
-//! [4] //! [5]
     connect(quitButton , &QPushButton::clicked, qApp, &QApplication::quit);
     connect(pauseButton, &QPushButton::clicked, board, &TetrixBoard::pause);
-#if __cplusplus >= 201402L
+
     connect(board, &TetrixBoard::scoreChanged,
             scoreLcd, qOverload<int>(&QLCDNumber::display));
     connect(board, &TetrixBoard::levelChanged,
             levelLcd, qOverload<int>(&QLCDNumber::display));
     connect(board, &TetrixBoard::linesRemovedChanged,
             linesLcd, qOverload<int>(&QLCDNumber::display));
-#else
-    connect(board, &TetrixBoard::scoreChanged,
-            scoreLcd, QOverload<int>::of(&QLCDNumber::display));
-    connect(board, &TetrixBoard::levelChanged,
-            levelLcd, QOverload<int>::of(&QLCDNumber::display));
-    connect(board, &TetrixBoard::linesRemovedChanged,
-            linesLcd, QOverload<int>::of(&QLCDNumber::display));
-#endif
-//! [5]
 
-//! [6]
+    connect(cameraWidget,SIGNAL(tourneCam()),board,SLOT(touche()));                    // faire les fonctions dans board
+    connect(cameraWidget,SIGNAL(droiteCam()),board,SLOT(droite()));
+    connect(cameraWidget,SIGNAL(gaucheCam()),board,SLOT(gauche()));
+
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(createLabel(tr("NEXT")), 0, 0);
     layout->addWidget(nextPieceLabel, 1, 0);
     layout->addWidget(createLabel(tr("CAMERA")), 2, 0);
-    layout->addWidget(cameraLabel, 3, 0); // Camera
+    layout->addWidget(cameraWidget, 3, 0); // Camera
     layout->addWidget(createLabel(tr("LEVEL")), 4, 0);
     layout->addWidget(levelLcd, 5, 0);
     layout->addWidget(startButton, 6, 0);
@@ -131,16 +117,14 @@ TetrixWindow::TetrixWindow()
     setLayout(layout);
 
     setWindowTitle(tr("Tetrax"));
-    resize(850, 575);
+    resize(1550, 875);
 }
-//! [6]
 
-//! [7]
 QLabel *TetrixWindow::createLabel(const QString &text)
 {
     QLabel *label = new QLabel(text);
     label->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     return label;
 }
-//! [7]
+
 

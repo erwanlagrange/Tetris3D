@@ -1,13 +1,15 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <QWidget>
+#include <QLabel>
+#include <QPixmap>
+#include <QTimer>
 #include "opencv2/opencv.hpp"
 
 using namespace cv;
 using namespace std;
 
-class camera : public QWidget
+class camera : public QLabel
 {
     Q_OBJECT
 
@@ -25,6 +27,12 @@ private:
 public slots:
     void updatePicture();
     char positionMain();
+
+signals:
+    // These signals move the tetriminos when the fists are in a certain shape
+    void tourneCam();
+    void droiteCam();
+    void gaucheCam();
 
 };
 

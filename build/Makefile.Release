@@ -281,8 +281,9 @@ release/moc_tetrixboard.cpp: ../tetrix/tetrixpiece.h \
 		C:/Qt/5.12.0/mingw73_64/bin/moc.exe
 	C:\Qt\5.12.0\mingw73_64\bin\moc.exe $(DEFINES) --include C:/Users/Erwan/Documents/FISE/s8/projet_Tetris/Tetris3D/build/release/moc_predefs.h -IC:/Qt/5.12.0/mingw73_64/mkspecs/win32-g++ -IC:/Users/Erwan/Documents/FISE/s8/projet_Tetris/Tetris3D/tetrix -IC:/opencv/build/install/include -IC:/Qt/5.12.0/mingw73_64/include -IC:/Qt/5.12.0/mingw73_64/include/QtOpenGL -IC:/Qt/5.12.0/mingw73_64/include/QtWidgets -IC:/Qt/5.12.0/mingw73_64/include/QtGui -IC:/Qt/5.12.0/mingw73_64/include/QtANGLE -IC:/Qt/5.12.0/mingw73_64/include/QtCore -I. -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -IC:/Qt/Tools/mingw730_64/x86_64-w64-mingw32/include ..\tetrix\tetrixboard.h -o release\moc_tetrixboard.cpp
 
-release/moc_tetrixwindow.cpp: C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QFrame \
-		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qframe.h \
+release/moc_tetrixwindow.cpp: ../tetrix/camera.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QLabel \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qlabel.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qtwidgetsglobal.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtguiglobal.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qglobal.h \
@@ -308,6 +309,7 @@ release/moc_tetrixwindow.cpp: C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QFrame \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qversiontagging.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtgui-config.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qframe.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qwidget.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qwindowdefs.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qobjectdefs.h \
@@ -385,14 +387,48 @@ release/moc_tetrixwindow.cpp: C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QFrame \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qfiledevice.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qvector2d.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtouchdevice.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtGui/QPixmap \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/QTimer \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/qtimer.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/qbasictimer.h \
+		C:/opencv/build/install/include/opencv2/opencv.hpp \
+		C:/opencv/build/install/include/opencv2/opencv_modules.hpp \
+		C:/opencv/build/install/include/opencv2/core/core_c.h \
+		C:/opencv/build/install/include/opencv2/core/types_c.h \
+		C:/opencv/build/install/include/opencv2/core/core.hpp \
+		C:/opencv/build/install/include/opencv2/core/version.hpp \
+		C:/opencv/build/install/include/opencv2/core/operations.hpp \
+		C:/opencv/build/install/include/opencv2/core/mat.hpp \
+		C:/opencv/build/install/include/opencv2/flann/miniflann.hpp \
+		C:/opencv/build/install/include/opencv2/flann/defines.h \
+		C:/opencv/build/install/include/opencv2/flann/config.h \
+		C:/opencv/build/install/include/opencv2/imgproc/imgproc_c.h \
+		C:/opencv/build/install/include/opencv2/imgproc/types_c.h \
+		C:/opencv/build/install/include/opencv2/imgproc/imgproc.hpp \
+		C:/opencv/build/install/include/opencv2/photo/photo.hpp \
+		C:/opencv/build/install/include/opencv2/photo/photo_c.h \
+		C:/opencv/build/install/include/opencv2/video/video.hpp \
+		C:/opencv/build/install/include/opencv2/video/tracking.hpp \
+		C:/opencv/build/install/include/opencv2/video/background_segm.hpp \
+		C:/opencv/build/install/include/opencv2/features2d/features2d.hpp \
+		C:/opencv/build/install/include/opencv2/objdetect/objdetect.hpp \
+		C:/opencv/build/install/include/opencv2/calib3d/calib3d.hpp \
+		C:/opencv/build/install/include/opencv2/core/affine.hpp \
+		C:/opencv/build/install/include/opencv2/ml/ml.hpp \
+		C:/opencv/build/install/include/opencv2/highgui/highgui_c.h \
+		C:/opencv/build/install/include/opencv2/highgui/highgui.hpp \
+		C:/opencv/build/install/include/opencv2/contrib/contrib.hpp \
+		C:/opencv/build/install/include/opencv2/contrib/retina.hpp \
+		C:/opencv/build/install/include/opencv2/contrib/openfabmap.hpp \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QFrame \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QWidget \
 		../tetrix/tetrixwindow.h \
 		release/moc_predefs.h \
 		C:/Qt/5.12.0/mingw73_64/bin/moc.exe
 	C:\Qt\5.12.0\mingw73_64\bin\moc.exe $(DEFINES) --include C:/Users/Erwan/Documents/FISE/s8/projet_Tetris/Tetris3D/build/release/moc_predefs.h -IC:/Qt/5.12.0/mingw73_64/mkspecs/win32-g++ -IC:/Users/Erwan/Documents/FISE/s8/projet_Tetris/Tetris3D/tetrix -IC:/opencv/build/install/include -IC:/Qt/5.12.0/mingw73_64/include -IC:/Qt/5.12.0/mingw73_64/include/QtOpenGL -IC:/Qt/5.12.0/mingw73_64/include/QtWidgets -IC:/Qt/5.12.0/mingw73_64/include/QtGui -IC:/Qt/5.12.0/mingw73_64/include/QtANGLE -IC:/Qt/5.12.0/mingw73_64/include/QtCore -I. -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -IC:/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -IC:/Qt/Tools/mingw730_64/x86_64-w64-mingw32/include ..\tetrix\tetrixwindow.h -o release\moc_tetrixwindow.cpp
 
-release/moc_camera.cpp: C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QWidget \
-		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qwidget.h \
+release/moc_camera.cpp: C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QLabel \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qlabel.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qtwidgetsglobal.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtguiglobal.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qglobal.h \
@@ -418,6 +454,8 @@ release/moc_camera.cpp: C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QWidget \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qversiontagging.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtgui-config.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qframe.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qwidget.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qwindowdefs.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qobjectdefs.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qnamespace.h \
@@ -494,6 +532,10 @@ release/moc_camera.cpp: C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QWidget \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qfiledevice.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qvector2d.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtouchdevice.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtGui/QPixmap \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/QTimer \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/qtimer.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/qbasictimer.h \
 		C:/opencv/build/install/include/opencv2/opencv.hpp \
 		C:/opencv/build/install/include/opencv2/opencv_modules.hpp \
 		C:/opencv/build/install/include/opencv2/core/core_c.h \
@@ -1011,6 +1053,39 @@ release/main.o: ../tetrix/main.cpp C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QtW
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qwizard.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qtwidgetsversion.h \
 		../tetrix/tetrixwindow.h \
+		../tetrix/camera.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QLabel \
+		C:/Qt/5.12.0/mingw73_64/include/QtGui/QPixmap \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/QTimer \
+		C:/opencv/build/install/include/opencv2/opencv.hpp \
+		C:/opencv/build/install/include/opencv2/opencv_modules.hpp \
+		C:/opencv/build/install/include/opencv2/core/core_c.h \
+		C:/opencv/build/install/include/opencv2/core/types_c.h \
+		C:/opencv/build/install/include/opencv2/core/core.hpp \
+		C:/opencv/build/install/include/opencv2/core/version.hpp \
+		C:/opencv/build/install/include/opencv2/core/operations.hpp \
+		C:/opencv/build/install/include/opencv2/core/mat.hpp \
+		C:/opencv/build/install/include/opencv2/flann/miniflann.hpp \
+		C:/opencv/build/install/include/opencv2/flann/defines.h \
+		C:/opencv/build/install/include/opencv2/flann/config.h \
+		C:/opencv/build/install/include/opencv2/imgproc/imgproc_c.h \
+		C:/opencv/build/install/include/opencv2/imgproc/types_c.h \
+		C:/opencv/build/install/include/opencv2/imgproc/imgproc.hpp \
+		C:/opencv/build/install/include/opencv2/photo/photo.hpp \
+		C:/opencv/build/install/include/opencv2/photo/photo_c.h \
+		C:/opencv/build/install/include/opencv2/video/video.hpp \
+		C:/opencv/build/install/include/opencv2/video/tracking.hpp \
+		C:/opencv/build/install/include/opencv2/video/background_segm.hpp \
+		C:/opencv/build/install/include/opencv2/features2d/features2d.hpp \
+		C:/opencv/build/install/include/opencv2/objdetect/objdetect.hpp \
+		C:/opencv/build/install/include/opencv2/calib3d/calib3d.hpp \
+		C:/opencv/build/install/include/opencv2/core/affine.hpp \
+		C:/opencv/build/install/include/opencv2/ml/ml.hpp \
+		C:/opencv/build/install/include/opencv2/highgui/highgui_c.h \
+		C:/opencv/build/install/include/opencv2/highgui/highgui.hpp \
+		C:/opencv/build/install/include/opencv2/contrib/contrib.hpp \
+		C:/opencv/build/install/include/opencv2/contrib/retina.hpp \
+		C:/opencv/build/install/include/opencv2/contrib/openfabmap.hpp \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QFrame
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\tetrix\main.cpp
 
@@ -2220,12 +2295,15 @@ release/tetrixwindow.o: ../tetrix/tetrixwindow.cpp C:/Qt/5.12.0/mingw73_64/inclu
 		C:/opencv/build/install/include/opencv2/contrib/retina.hpp \
 		C:/opencv/build/install/include/opencv2/contrib/openfabmap.hpp \
 		../tetrix/tetrixwindow.h \
-		../tetrix/camera.h
+		../tetrix/camera.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QLabel \
+		C:/Qt/5.12.0/mingw73_64/include/QtGui/QPixmap \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/QTimer
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\tetrixwindow.o ..\tetrix\tetrixwindow.cpp
 
 release/camera.o: ../tetrix/camera.cpp ../tetrix/camera.h \
-		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QWidget \
-		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qwidget.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/QLabel \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qlabel.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qtwidgetsglobal.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtguiglobal.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qglobal.h \
@@ -2251,6 +2329,8 @@ release/camera.o: ../tetrix/camera.cpp ../tetrix/camera.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qversiontagging.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtgui-config.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qframe.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtWidgets/qwidget.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qwindowdefs.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qobjectdefs.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qnamespace.h \
@@ -2327,6 +2407,10 @@ release/camera.o: ../tetrix/camera.cpp ../tetrix/camera.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/qfiledevice.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qvector2d.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtGui/qtouchdevice.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtGui/QPixmap \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/QTimer \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/qtimer.h \
+		C:/Qt/5.12.0/mingw73_64/include/QtCore/qbasictimer.h \
 		C:/opencv/build/install/include/opencv2/opencv.hpp \
 		C:/opencv/build/install/include/opencv2/opencv_modules.hpp \
 		C:/opencv/build/install/include/opencv2/core/core_c.h \
@@ -2357,9 +2441,6 @@ release/camera.o: ../tetrix/camera.cpp ../tetrix/camera.h \
 		C:/opencv/build/install/include/opencv2/contrib/retina.hpp \
 		C:/opencv/build/install/include/opencv2/contrib/openfabmap.hpp \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/QString \
-		C:/Qt/5.12.0/mingw73_64/include/QtCore/QTimer \
-		C:/Qt/5.12.0/mingw73_64/include/QtCore/qtimer.h \
-		C:/Qt/5.12.0/mingw73_64/include/QtCore/qbasictimer.h \
 		C:/Qt/5.12.0/mingw73_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\camera.o ..\tetrix\camera.cpp
 

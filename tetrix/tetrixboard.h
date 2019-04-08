@@ -38,9 +38,10 @@ public:
 public slots:
     void start();
     void pause();
-    // camera
-    void updatePicture();
-    void positionMain();
+    // Move the piece when the signal of rotation or translation is received
+    void touche();
+    void droite();
+    void gauche();
 
 signals:
     void scoreChanged(int score);
@@ -56,8 +57,6 @@ protected:
 
     // Fonction d'affichage
     void paintGL() override;
-
-    void paintEvent(QPaintEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void timerEvent(QTimerEvent *event) override;
 //! [0]
@@ -96,15 +95,6 @@ private:
     int score;
     int level;
     TetrixShape board[BoardWidth * BoardHeight];
-
-    // camera
-
-    VideoCapture *webCam_;
-    QTimer * timerCamera;
-    VideoCapture cap;
-    CascadeClassifier face_cascade;
-    vector<Rect> fist;
-    QString direction;
 };
 
 //! [1]

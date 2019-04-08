@@ -68,13 +68,6 @@
 using namespace cv;
 using namespace std;
 
-//const unsigned int WIN_WIDTH  = 900;
-//const unsigned int WIN_HEIGHT = 1600;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
-
 TetrixBoard::TetrixBoard(QGLWidget *parent)
     : QGLWidget (parent)
 {
@@ -84,30 +77,6 @@ TetrixBoard::TetrixBoard(QGLWidget *parent)
     clearBoard();
 
     nextPiece.setRandomShape();
-
-    // camera
-
-    cap = VideoCapture(0);
-
-    /*int frameWidth = 200;
-    int frameHeight = 100;
-
-    cap.set(CV_CAP_PROP_FRAME_WIDTH,frameWidth);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT,frameHeight);*/
-
-    if(!cap.isOpened())  // check if we succeeded
-    {
-        cerr<<"Error openning the default camera"<<endl;
-    }
-
-    if(!face_cascade.load( "../tetrix/fist_v3.xml" ))
-    {
-        cerr<<"Error loading haarcascade"<<endl;
-    }
-
-    timerCamera = new QTimer(this);
-    connect(timerCamera, SIGNAL(timeout()), this, SLOT(updatePicture()));
-    timerCamera->start(16);
 }
 
 void TetrixBoard::setNextPieceLabel(QLabel *label)
@@ -115,31 +84,10 @@ void TetrixBoard::setNextPieceLabel(QLabel *label)
     nextPieceLabel = label;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
 void TetrixBoard::setCameraLabel(QLabel *label)
 {
     cameraLabel = label;
 }
-
-/*QSize TetrixBoard::sizeHint() const
-{
-    return QSize(BoardWidth * 15 + frameWidth() * 2,
-                 BoardHeight * 15 + frameWidth() * 2);
-}
-
-QSize TetrixBoard::minimumSizeHint() const
-//! [2] //! [3]
-{
-    return QSize(BoardWidth * 5 + frameWidth() * 2,
-                 BoardHeight * 5 + frameWidth() * 2);
-}*/
-<<<<<<< HEAD
-=======
-
->>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
 
 void TetrixBoard::start()
 {
@@ -160,11 +108,8 @@ void TetrixBoard::start()
 
     newPiece();
     timer.start(timeoutTime(), this);
-    updateGL();
 }
-//! [4]
 
-//! [5]
 void TetrixBoard::pause()
 {
     if (!isStarted)
@@ -176,64 +121,16 @@ void TetrixBoard::pause()
     } else {
         timer.start(timeoutTime(), this);
     }
-    updateGL();
-//! [5] //! [6]
+    update();
 }
-//! [6]
 
-//! [7]
-void TetrixBoard::paintEvent(QPaintEvent *event)
-{
-    QGLWidget::paintEvent(event);
-
-   /* QPainter painter(this);
-    QRect rect = contentsRect();
-//! [7]
-
-    if (isPaused) {
-        painter.drawText(rect, Qt::AlignCenter, tr("Pause"));
-        return;
-    }
-
-//! [8]
-    int boardTop = rect.bottom() - BoardHeight*squareHeight();
-
-    for (int i = 0; i < BoardHeight; ++i) {
-        for (int j = 0; j < BoardWidth; ++j) {
-            TetrixShape shape = shapeAt(j, BoardHeight - i - 1);
-            if (shape != NoShape)
-                drawSquare(painter, rect.left() + j * squareWidth(),
-                           boardTop + i * squareHeight(), shape);
-        }
-//! [8] //! [9]
-    }
-//! [9]
-
-//! [10]
-    if (curPiece.shape() != NoShape) {
-        for (int i = 0; i < 4; ++i) {
-            int x = curX + curPiece.x(i);
-            int y = curY - curPiece.y(i);
-            drawSquare(painter, rect.left() + x * squareWidth(),
-                       boardTop + (BoardHeight - y - 1) * squareHeight(),
-                       curPiece.shape());
-        }
-//! [10] //! [11]
-    }
-//! [11] //! [12]*/
-}
-//! [12]
-
-//! [13]
 void TetrixBoard::keyPressEvent(QKeyEvent *event)
 {
     if (!isStarted || isPaused || curPiece.shape() == NoShape) {
         QGLWidget::keyPressEvent(event);
         return;
     }
-//! [13]
 
-//! [14]
     switch (event->key()) {
     case Qt::Key_Left:
         tryMove(curPiece, curX - 1, curY);
@@ -253,13 +150,15 @@ void TetrixBoard::keyPressEvent(QKeyEvent *event)
     case Qt::Key_D:
         oneLineDown();
         break;
+    case Qt::Key_Escape:
+        QApplication::quit();
+        break;
     default:
-        QGLWidget::keyPressEvent(event);
+        keyPressEvent(event);
     }
-//! [14]
+    updateGL();
 }
 
-//! [15]
 void TetrixBoard::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == timer.timerId()) {
@@ -271,22 +170,16 @@ void TetrixBoard::timerEvent(QTimerEvent *event)
             oneLineDown();
         }
     } else {
-        QGLWidget::timerEvent(event);
-//! [15] //! [16]
+        timerEvent(event);
     }
-//! [16] //! [17]
 }
-//! [17]
 
-//! [18]
 void TetrixBoard::clearBoard()
 {
     for (int i = 0; i < BoardHeight * BoardWidth; ++i)
         board[i] = NoShape;
 }
-//! [18]
 
-//! [19]
 void TetrixBoard::dropDown()
 {
     int dropHeight = 0;
@@ -298,11 +191,8 @@ void TetrixBoard::dropDown()
         ++dropHeight;
     }
     pieceDropped(dropHeight);
-//! [19] //! [20]
 }
-//! [20]
 
-//! [21]
 void TetrixBoard::oneLineDown()
 {
     if (!tryMove(curPiece, curX, curY - 1))
@@ -332,11 +222,8 @@ void TetrixBoard::pieceDropped(int dropHeight)
 
     if (!isWaitingAfterLine)
         newPiece();
-//! [22] //! [23]
 }
-//! [23]
 
-//! [24]
 void TetrixBoard::removeFullLines()
 {
     int numFullLines = 0;
@@ -352,21 +239,15 @@ void TetrixBoard::removeFullLines()
         }
 
         if (lineIsFull) {
-//! [24] //! [25]
             ++numFullLines;
             for (int k = i; k < BoardHeight - 1; ++k) {
                 for (int j = 0; j < BoardWidth; ++j)
                     shapeAt(j, k) = shapeAt(j, k + 1);
             }
-//! [25] //! [26]
             for (int j = 0; j < BoardWidth; ++j)
                 shapeAt(j, BoardHeight - 1) = NoShape;
         }
-//! [26] //! [27]
     }
-//! [27]
-
-//! [28]
     if (numFullLines > 0) {
         numLinesRemoved += numFullLines;
         score += 10 * numFullLines;
@@ -376,13 +257,11 @@ void TetrixBoard::removeFullLines()
         timer.start(500, this);
         isWaitingAfterLine = true;
         curPiece.setShape(NoShape);
-        updateGL();
+        update();
+        //updateGL();
     }
-//! [28] //! [29]
 }
-//! [29]
 
-//! [30]
 void TetrixBoard::newPiece()
 {
     curPiece = nextPiece;
@@ -396,35 +275,8 @@ void TetrixBoard::newPiece()
         timer.stop();
         isStarted = false;
     }
-//! [30] //! [31]
 }
-//! [31]
 
-//! [32]
-/*void TetrixBoard::showNextPiece()
-{
-    if (!nextPieceLabel)
-        return;
-
-    int dx = nextPiece.maxX() - nextPiece.minX() + 1;
-    int dy = nextPiece.maxY() - nextPiece.minY() + 1;
-
-    QPixmap pixmap(dx * squareWidth(), dy * squareHeight());
-    QPainter painter(&pixmap);
-    painter.fillRect(pixmap.rect(), nextPieceLabel->palette().background());
-
-    for (int i = 0; i < 4; ++i) {
-        int x = nextPiece.x(i) - nextPiece.minX();
-        int y = nextPiece.y(i) - nextPiece.minY();
-        drawSquare(painter, x * squareWidth(), y * squareHeight(),
-                   nextPiece.shape());
-    }
-    nextPieceLabel->setPixmap(pixmap);
-//! [32] //! [33]
-}*/
-//! [33]
-
-//! [34]
 bool TetrixBoard::tryMove(const TetrixPiece &newPiece, int newX, int newY)
 {
     for (int i = 0; i < 4; ++i) {
@@ -435,18 +287,18 @@ bool TetrixBoard::tryMove(const TetrixPiece &newPiece, int newX, int newY)
         if (shapeAt(x, y) != NoShape)
             return false;
     }
-//! [34]
 
-//! [35]
     curPiece = newPiece;
     curX = newX;
     curY = newY;
-    updateGL();
+    update();
+    //updateGL();
     return true;
 }
 //! [35]
 void TetrixBoard::drawCube(int x, int y, TetrixShape shape)
 {
+    /*
     static const QRgb colorTable[8] = {
         0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
         0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00
@@ -484,83 +336,102 @@ void TetrixBoard::drawCube(int x, int y, TetrixShape shape)
     glVertex3f(x*10+10, y*10+10,5.0f);
     glVertex3f(x*10+10, y*10,5.0f);
     glVertex3f(x*10+10, y*10,0);
-    glEnd();
-}
-//! [36]
-/*void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
-{
+    glEnd();*/
+
     static const QRgb colorTable[8] = {
         0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
         0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00
     };
 
     QColor color = colorTable[int(shape)];
-    painter.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2,
-                     color);
 
-    painter.setPen(color.light());
-    painter.drawLine(x, y + squareHeight() - 1, x, y);
-    painter.drawLine(x, y, x + squareWidth() - 1, y);
+    // Scale adaptation
+    x=x*4;
+    y=y*4;
 
-    painter.setPen(color.dark());
-    painter.drawLine(x + 1, y + squareHeight() - 1,
-                     x + squareWidth() - 1, y + squareHeight() - 1);
-    painter.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
-                     x + squareWidth() - 1, y + 1);
-}*/
+    glBegin(GL_QUADS);
 
-void TetrixBoard::drawCube(int x, int y, TetrixShape shape)
-{
-    static const QRgb colorTable[8] = {
-        0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
-        0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00
-    };
+    glColor3ub(color.red(), color.green(), color.blue());
 
-    glVertex3f(x*10,y*10 + 10, 0);
-    glVertex3f(x*10,y*10,0);
-    glVertex3f(x*10 + 10, y*10,0);
-    glVertex3f(x*10 + 10, y*10+ 10,0);
+    //Drawing of the cube
+    glVertex3f(x,y,5);      //Front face
+    glVertex3f(x+4,y,5);
+    glVertex3f(x+4,y+4,5);
+    glVertex3f(x,y+4,5);
 
-    glVertex3f(x*10 + 10, y*10+ 10,0);
-    glVertex3f(x*10 + 10, y*10+ 10,5 );
-    glVertex3f(x*10 , y*10+ 10,5  );
-    glVertex3f(x*10 , y*10+ 10, 0);
-
-    glVertex3f(x*10,y*10 + 10, 5);
-    glVertex3f(x*10,y*10,5);
-    glVertex3f(x*10 + 10, y*10,5);
-    glVertex3f(x*10 + 10, y*10+ 10,5);
-
-    glVertex3f(x*10 + 10, y*10,0);
-    glVertex3f(x*10 + 10, y*10,5 );
-    glVertex3f(x*10 , y*10,5  );
-    glVertex3f(x*10 , y*10, 0);
-
-    glVertex3f(x*10 + 10, y*10+10,0);
-    glVertex3f(x*10 + 10, y*10+10,5 );
-    glVertex3f(x*10+ 10, y*10,5  );
-    glVertex3f(x*10 +10, y*10, 0);
-
-    glVertex3f(x*10, y*10+10,0);
-    glVertex3f(x*10, y*10+10,5 );
-    glVertex3f(x*10, y*10,5  );
-    glVertex3f(x*10, y*10, 0);
+    glVertex3f(x,y,1);      //Back face
+    glVertex3f(x+4,y,1);
+    glVertex3f(x+4,y+4,1);
+    glVertex3f(x,y+4,1);
 
 
-}
+    glVertex3f(x,y,5);      //Left face
+    glVertex3f(x,y+4,5);
+    glVertex3f(x,y+4,1);
+    glVertex3f(x,y,1);
 
+    glVertex3f(x+4,y,5);    //Right face
+    glVertex3f(x+4,y+4,5);
+    glVertex3f(x+4,y+4,1);
+    glVertex3f(x+4,y,1);
 
-void TetrixBoard::setBackGroundColor(){
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glVertex3f(x,y,5);      //Lower face
+    glVertex3f(x+4,y,5);
+    glVertex3f(x+4,y,1);
+    glVertex3f(x,y,1);
+
+    glVertex3f(x,y+4,5);    //Upper face
+    glVertex3f(x+4,y+4,5);
+    glVertex3f(x+4,y+4,1);
+    glVertex3f(x,y+4,1);
+
+    glEnd();
+
+    // ligne des cubes
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glVertex3f(x,y,5.01f);
+    glVertex3f(x+4,y,5.01f);
+
+    glVertex3f(x+4,y,5.01f);
+    glVertex3f(x+4,y+4,5.01f);
+
+    glVertex3f(x+4,y+4,5.01f);
+    glVertex3f(x,y+4,5.01f);
+
+    glVertex3f(x,y+4,5.01f);
+    glVertex3f(x,y,5.01f);
+
+    //left
+    glVertex3f(x+0.01f,y-0.01f,5.01f);
+    glVertex3f(x+0.01f,y-0.01f,1.01f);
+
+    glVertex3f(x+0.01f,y+4.01f,5.01f);
+    glVertex3f(x+.01f,y+4.01f,1.01f);
+
+    //Right
+
+    glVertex3f(x+4.01f,y-0.01f,5.01f);
+    glVertex3f(x+4.01f,y-0.01f,1.01f);
+
+    glVertex3f(x+4.01f,y+4.01f,5.01f);
+    glVertex3f(x+4.01f,y+4.01f,1.01f);
+
+    glEnd();
+
 }
 
 void TetrixBoard::initializeGL()
 {
     // Reglage de la couleur de fond
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     // Activation du zbuffer
     glEnable(GL_DEPTH_TEST);
+
+    paintGL();
+    newPiece();
 }
 
 void TetrixBoard::resizeGL(int width, int height)
@@ -572,30 +443,50 @@ void TetrixBoard::resizeGL(int width, int height)
     // Definition de la matrice de projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(80.0f, static_cast <float>(width)/height, 0.1f, 300.0f);
+    glOrtho(-50.0f, 50.0f, -5.0f, 150.0f, -100.0f, 300.0f);
+    //gluPerspective(80.0f, static_cast <float>(width)/height, 0.1f, 300.0f);
+
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void TetrixBoard::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadIdentity();
-    //gluPerspective(80.0f, width()/height(), 0.1f, 100.0f);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    gluPerspective(90, 1, 0.1, 300);
+    gluLookAt(20, 0, 50, // position de la caméra
+                20, 40, 0, // position du point que fixe la caméra
+                0, 1, 0); // vecteur vertical
+
+    //gluLookAt(20, 0, 50, 20, 30, 0, 0, 1, 0);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-<<<<<<< HEAD
-    gluLookAt(50, 25, 200, // position de la caméra
-                50, 100, 0, // position du point que fixe la caméra
-                0, 1, 0); // vecteur vertical
-=======
 
-    gluLookAt(50, 25, 200, // position de la caméra
-                50, 100, 0, // position du point que fixe la caméra
-                0, 1, 0); // vecteur vertical
+    // Draw the grid
+    glColor3ub(255,255,255);
+    // Lines of the grid
+    for(int y = 0; y <= 20; y++)
+    {
+        glBegin(GL_LINES);
+        glVertex3f(0,4*y,1);
+        glVertex3f(40,4*y,1);
+        glEnd();
+     };
+    // Columns of the grid
+    for(int x = 0; x <= 10; x++){
+        glBegin(GL_LINES);
+        glVertex3f(4*x,0,1);
+        glVertex3f(4*x,80,1);
+        glEnd();
+     };
 
-    //gluLookAt(50, 100, 30, 105, 105, 5, 0, 1, 1);
-
->>>>>>> 5a862b32274c9dab3208aa033971bc275be1358e
+    // notre grille ( a essayer plus tard)
+    /*
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f,0.0f);
@@ -609,109 +500,37 @@ void TetrixBoard::paintGL()
         glVertex3f(0, 10*y, 0 );
         glVertex3f(100,10*y, 0 );
     }
-    glEnd();
-    glLoadIdentity();
-    QRect rect = contentsRect();
-    int boardTop = rect.bottom() - BoardHeight*squareHeight();
-    glBegin(GL_QUADS);
-    glColor3f(0.0f,1.0f,0.0f);
-    glLoadIdentity();
-    for (int i = 0; i < BoardHeight; ++i)
-    {
-            for (int j = 0; j < BoardWidth; ++j)
-            {
-                //qInfo() << BoardHeight;
-                //qInfo() << BoardWidth;
+    glEnd();*/
 
-                TetrixShape shape = shapeAt(j, i -1);
-                qInfo() <<  i - 1;
-
+    // Draw the squares
+    for (int i = 0; i < 20; ++i) {
+            for (int j = 0; j < 10; ++j) {
+                TetrixShape shape = shapeAt(j, i);
                 if (shape != NoShape)
-                    drawCube( j , i , shape);
-
-            }
-            //qInfo() << curPiece.shape();
-            if (curPiece.shape() != NoShape)
-            {
-
-                   for (int i = 0; i < 4; ++i)
-                   {
-
-                       int x = curX + curPiece.x(i);
-                       int y = curY - curPiece.y(i);
-                       //qInfo() << x;
-                       //qInfo()<< (y - 1);
-                       //qInfo() << y;
-                       drawCube( x, (y - 1), curPiece.shape());
-                   }
-             }
-
-    }
-    glEnd();
-
-}
-
-void TetrixBoard::updatePicture()
-{
-    Mat frame,frame_gray;
-    // Get frame
-    cap >> frame;
-
-    // Mirror effect
-    cv::flip(frame,frame,1);
-    // Convert to gray
-    cv::cvtColor(frame,frame_gray,COLOR_BGR2GRAY);
-    //-- Detect fist
-    face_cascade.detectMultiScale( frame_gray, fist, 1.1, 4, 0|CV_HAAR_SCALE_IMAGE, Size(60, 60) );
-
-    if (fist.size()>0)
-    {
-        // Draw green rectangle
-        for (int i=0;i<(int)fist.size();i++)
-            rectangle(frame,fist[i],Scalar(0,255,0),2);
-    }
-
-    cvtColor(frame, frame_gray,CV_BGR2RGB);
-    QImage image1= QImage((uchar*) frame_gray.data, frame_gray.cols, frame_gray.rows, frame_gray.step, QImage::Format_RGB888);
-
-    //show Qimage using QLabel
-    //cameraLabel->resize(200,100);
-    cameraLabel->setPixmap(QPixmap::fromImage(image1));
-    cameraLabel->show();
-    positionMain();
-}
-
-void TetrixBoard::positionMain()
-{
-    if(fist.size() == 2)  {
-        int centreX1 = (fist[0].br().x + fist[0].tl().x)/2;
-        int centreY1 = (fist[0].br().y + fist[0].tl().y)/2;
-        int centreX2 = (fist[1].br().x + fist[1].tl().x)/2;
-        int centreY2 = (fist[1].br().y + fist[1].tl().y)/2;
-
-        if (abs(centreX1 - centreX2) < 100 && abs(centreY1 - centreY2) < 30)
-        {
-           qDebug()<<"touche";
-           direction = "touche";
-        }
-
-        else {
-            if (centreY1 > 175 && centreY2 < 125)
-                    {
-                       direction = "gauche";
-                       qDebug()<<"gauche";
-                    }
-            else{
-                if (centreY1 < 125 && centreY2 > 175)
-                {
-                   direction = "droite";
-                   qDebug()<<"droite";
-                }
-                else{
-                    direction = "";
-                    qDebug()<<"rien";
-                }
+                    drawCube(j,i,shape);
             }
         }
-    }
+        if (curPiece.shape() != NoShape && isStarted==true) {
+            for (int i = 0; i < 4; ++i) {
+                int x = curX + curPiece.x(i);
+                int y = curY - curPiece.y(i);
+                drawCube(x,y, curPiece.shape());
+            }
+        }
 }
+
+void TetrixBoard::touche()
+{
+    tryMove(curPiece.rotatedRight(), curX, curY);
+}
+
+void TetrixBoard::droite()
+{
+    tryMove(curPiece, curX + 1, curY);
+}
+
+void TetrixBoard::gauche()
+{
+    tryMove(curPiece, curX - 1, curY);
+}
+
