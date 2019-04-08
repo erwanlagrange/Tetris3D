@@ -37,6 +37,7 @@ camera::camera(QWidget *parent) :
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
     timer->start(16);
+    i=0;
 }
 
 camera::~camera()
@@ -76,10 +77,15 @@ void camera::updatePicture()
 
             //ui->label->setPixmap(QPixmap::fromImage(image1));
             //ui->label->show();
-            positionMain();
+            if(i==6){
+               positionMain();
+               i = 0;
+            }
+            i++;
+
     }
 
-char camera::positionMain()
+void camera::positionMain()
     {
 
     //qDebug()<<fist.size();
@@ -91,25 +97,28 @@ char camera::positionMain()
         int centreX2 = (fist[1].br().x + fist[1].tl().x)/2;
         int centreY2 = (fist[1].br().y + fist[1].tl().y)/2;
 
-        if (abs(centreX1 - centreX2) < 100 && abs(centreY1 - centreY2) < 30)
+        if (abs(centreX1 - centreX2) < 100 && abs(centreY1 - centreY2) < 100)
         {
            qDebug()<<"touche";
            //ui->label_direction->setText("touche");
            emit tourneCam();
+           return;
         }
 
-        if (centreY1 > 175 && centreY2 < 125)
+        if (centreY1 > 150 && centreX1 < 150 && centreY2 < 150 && centreX2 > 150)
         {
            qDebug()<<"gauche";
            //ui->label_direction->setText("gauche");
            emit gaucheCam();
+           return;
         }
 
-        if (centreY1 < 125 && centreY2 > 175)
+        if (centreY1 < 150 && centreX1 < 150 && centreY2 > 150 &&  centreX2 > 150)
         {
            qDebug()<<"droite";
            //ui->label_direction->setText("droite");
            emit droiteCam();
+           return;
         }
     }
 }

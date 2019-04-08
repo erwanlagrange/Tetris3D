@@ -23,10 +23,11 @@ private:
     VideoCapture cap;
     CascadeClassifier face_cascade;
     vector<Rect> fist;
+    int i;
 
 public slots:
     void updatePicture();
-    char positionMain();
+    void positionMain();
 
 signals:
     // These signals move the tetriminos when the fists are in a certain shape

@@ -74,7 +74,7 @@ static const uint qt_meta_data_camera[] = {
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Char,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -89,8 +89,7 @@ void camera::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 1: _t->droiteCam(); break;
         case 2: _t->gaucheCam(); break;
         case 3: _t->updatePicture(); break;
-        case 4: { char _r = _t->positionMain();
-            if (_a[0]) *reinterpret_cast< char*>(_a[0]) = std::move(_r); }  break;
+        case 4: _t->positionMain(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -117,6 +116,7 @@ void camera::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
             }
         }
     }
+    Q_UNUSED(_a);
 }
 
 QT_INIT_METAOBJECT const QMetaObject camera::staticMetaObject = { {

@@ -266,7 +266,7 @@ void TetrixBoard::newPiece()
 {
     curPiece = nextPiece;
     nextPiece.setRandomShape();
-    //showNextPiece();
+    showNextPiece();
     curX = BoardWidth / 2 + 1;
     curY = BoardHeight - 1 + curPiece.minY();
 
@@ -532,5 +532,41 @@ void TetrixBoard::droite()
 void TetrixBoard::gauche()
 {
     tryMove(curPiece, curX - 1, curY);
+}
+
+void TetrixBoard::showNextPiece()
+{
+    if (!nextPieceLabel)
+        return;
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    gluPerspective(90, 1, 0.1, 300);
+    gluLookAt(5, 0, 50, // position de la caméra
+                0, 0, 0, // position du point que fixe la caméra
+                0, 1, 0); // vecteur vertical
+
+    //gluLookAt(20, 0, 50, 20, 30, 0, 0, 1, 0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+
+    int dx = nextPiece.maxX() - nextPiece.minX() + 1;
+    int dy = nextPiece.maxY() - nextPiece.minY() + 1;
+
+    QPixmap pixmap(dx * squareWidth(), dy * squareHeight());
+    QPainter painter(&pixmap);
+    painter.fillRect(pixmap.rect(), nextPieceLabel->palette().background());
+
+    for (int i = 0; i < 4; ++i) {
+        int x = nextPiece.x(i) - nextPiece.minX();
+        int y = nextPiece.y(i) - nextPiece.minY();
+        drawCube(x,y, nextPiece.shape());
+    }
+    nextPieceLabel->setPixmap(pixmap);
 }
 
