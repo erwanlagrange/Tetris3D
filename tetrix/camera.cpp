@@ -65,32 +65,25 @@ void camera::updatePicture()
                     rectangle(frame,fist[i],Scalar(0,255,0),2);
             }
 
-
             cvtColor(frame, frame_gray,CV_BGR2RGB);
             QImage image1= QImage((uchar*) frame_gray.data, frame_gray.cols, frame_gray.rows, frame_gray.step, QImage::Format_RGB888);
 
             //show Qimage using QLabel
-
             this->setPixmap(QPixmap::fromImage(image1));
             // Resize the label to fit the image
             this->resize(this->pixmap()->size());
 
-            //ui->label->setPixmap(QPixmap::fromImage(image1));
-            //ui->label->show();
             if(i==5){
                positionMain();
                i = 0;
             }
             i++;
-
     }
 
 void camera::positionMain()
     {
 
-    //qDebug()<<fist.size();
-    //ui->label_direction->setText("");
-
+    //récupère le centre
     if(fist.size() == 2)  {
         int centreX1 = (fist[0].br().x + fist[0].tl().x)/2;
         int centreY1 = (fist[0].br().y + fist[0].tl().y)/2;
@@ -100,23 +93,20 @@ void camera::positionMain()
         if (abs(centreX1 - centreX2) < 100 && abs(centreY1 - centreY2) < 100)
         {
            qDebug()<<"touche";
-           //ui->label_direction->setText("touche");
            emit tourneCam();
            return;
         }
 
-        if (centreY1 > 150 && centreX1 < 150 && centreY2 < 150 && centreX2 > 150)
+        if ((centreY1 > 150 && centreX1 < 300 && centreY2 < 150 && centreX2 > 300) || (centreY2 > 150 && centreX2 < 300 && centreY1 < 150 && centreX1 > 300))
         {
            qDebug()<<"gauche";
-           //ui->label_direction->setText("gauche");
            emit gaucheCam();
            return;
         }
 
-        if (centreY1 < 150 && centreX1 < 150 && centreY2 > 150 &&  centreX2 > 150)
+        if ((centreY1 < 150 && centreX1 < 300 && centreY2 > 150 &&  centreX2 > 300) || (centreY2 < 150 && centreX2 < 300 && centreY1 > 150 &&  centreX1 > 300) )
         {
            qDebug()<<"droite";
-           //ui->label_direction->setText("droite");
            emit droiteCam();
            return;
         }

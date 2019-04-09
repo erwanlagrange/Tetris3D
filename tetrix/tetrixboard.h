@@ -66,12 +66,12 @@ protected:
 
 //! [1]
 private:
-    enum { BoardWidth = 10, BoardHeight = 22 };
+    enum { BoardWidth = 10, BoardHeight = 20 };
 
     TetrixShape &shapeAt(int x, int y) { return board[(y * BoardWidth) + x]; }
     int timeoutTime() { return 1000 / (1 + level); }
-    int squareWidth() { return 100/ BoardWidth; }
-    int squareHeight() { return 200 / BoardHeight; }
+    int squareWidth() { return 400/ BoardWidth; }
+    int squareHeight() { return 800 / BoardHeight; }
     void clearBoard();
     void dropDown();
     void oneLineDown();
@@ -100,6 +100,8 @@ private:
     TetrixShape board[BoardWidth * BoardHeight];
 
     QGLWidget *nextPieceWidget;
+
+    int xcam, ycam;
 };
 
 //! [1]

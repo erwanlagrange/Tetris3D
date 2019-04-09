@@ -57,35 +57,41 @@
 //! [0]
 TetrixWindow::TetrixWindow()
 {
+    QFont fontbutton;
+    fontbutton.setPointSize(14);
+    fontbutton.setBold(true);
+
     board = new TetrixBoard;
-    cameraWidget = new camera();
-    nextPieceWidget = new QGLWidget();
+    cameraWidget = new camera(); // widget camera
 
-
-    /*
     nextPieceLabel = new QLabel;
     nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
-    nextPieceLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    board->setNextPieceLabel(nextPieceLabel);*/
-
-    /*cameraLabel = new QLabel;
-    cameraLabel->setFrameStyle(QFrame::Plain | QFrame::Raised);
-    cameraLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
-    board->setCameraLabel(cameraLabel);*/
+    nextPieceLabel->setAlignment(Qt::AlignCenter);
+    //nextPieceLabel->setMinimumHeight(200);
+    board->setNextPieceLabel(nextPieceLabel);
 
     scoreLcd = new QLCDNumber(5);
     scoreLcd->setSegmentStyle(QLCDNumber::Filled);
+    scoreLcd->setMinimumHeight(50);
+    scoreLcd->setMaximumHeight(100);
     levelLcd = new QLCDNumber(2);
     levelLcd->setSegmentStyle(QLCDNumber::Filled);
+    levelLcd->setMinimumHeight(50);
+    levelLcd->setMaximumHeight(100);
     linesLcd = new QLCDNumber(5);
     linesLcd->setSegmentStyle(QLCDNumber::Filled);
+    linesLcd->setMinimumHeight(50);
+    linesLcd->setMaximumHeight(100);
 
     startButton = new QPushButton(tr("&Start"));
     startButton->setFocusPolicy(Qt::NoFocus);
+    startButton->setFont(fontbutton);
     quitButton = new QPushButton(tr("&Quit"));
     quitButton->setFocusPolicy(Qt::NoFocus);
+    quitButton->setFont(fontbutton);
     pauseButton = new QPushButton(tr("&Pause"));
     pauseButton->setFocusPolicy(Qt::NoFocus);
+    pauseButton->setFont(fontbutton);
 
     connect(startButton, &QPushButton::clicked, board, &TetrixBoard::start);
     connect(quitButton , &QPushButton::clicked, qApp, &QApplication::quit);
@@ -103,21 +109,20 @@ TetrixWindow::TetrixWindow()
     connect(cameraWidget,SIGNAL(gaucheCam()),board,SLOT(gauche()));
 
     QGridLayout *layout = new QGridLayout;
-    layout->addWidget(createLabel(tr("NEXT")), 0, 0);
-    //layout->addWidget(nextPieceLabel, 1, 0);
-    layout->addWidget(nextPieceWidget, 1, 0);
+    layout->addWidget(createLabel(tr("NEXT PIECE")), 0, 0);
+    layout->addWidget(nextPieceLabel, 1, 0);
     layout->addWidget(createLabel(tr("CAMERA")), 2, 0);
     layout->addWidget(cameraWidget, 3, 0); // Camera
-    layout->addWidget(createLabel(tr("LEVEL")), 4, 0);
-    layout->addWidget(levelLcd, 5, 0);
-    layout->addWidget(startButton, 6, 0);
     layout->addWidget(board, 0, 1, 7, 1);
     layout->addWidget(createLabel(tr("SCORE")), 0, 2);
     layout->addWidget(scoreLcd, 1, 2);
-    layout->addWidget(createLabel(tr("LINES REMOVED")), 2, 2);
-    layout->addWidget(linesLcd, 3, 2);
-    layout->addWidget(quitButton, 4, 2);
-    layout->addWidget(pauseButton, 5, 2);
+    layout->addWidget(createLabel(tr("LEVEL")), 2, 2);
+    layout->addWidget(levelLcd, 3, 2);
+    layout->addWidget(createLabel(tr("LINES REMOVED")), 4, 2);
+    layout->addWidget(linesLcd, 5, 2);
+    layout->addWidget(startButton, 6, 2);
+    layout->addWidget(quitButton, 7, 2);
+    layout->addWidget(pauseButton, 8, 2);
     setLayout(layout);
 
     setWindowTitle(tr("Tetrax"));
@@ -127,6 +132,12 @@ TetrixWindow::TetrixWindow()
 QLabel *TetrixWindow::createLabel(const QString &text)
 {
     QLabel *label = new QLabel(text);
+
+    QFont font;
+    font.setPointSize(22);
+    font.setBold(true);
+
+    label->setFont(font);
     label->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     return label;
 }
