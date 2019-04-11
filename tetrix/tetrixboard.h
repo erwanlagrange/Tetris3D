@@ -28,23 +28,19 @@ class TetrixBoard : public QGLWidget
 
 public:
     TetrixBoard(QGLWidget *parent = nullptr);
-
     void setNextPieceLabel(QLabel *label);
-
-    void setNextPieceWidget(QGLWidget *Widget);
-
+    // label pour l'affichage de la caméra
     void setCameraLabel(QLabel *label);
     void setBackGroundColor();
-    //QSize sizeHint() const override;
-    //QSize minimumSizeHint() const override;
 
 public slots:
     void start();
     void pause();
-    // Move the piece when the signal of rotation or translation is received
+    // bouge la piece en fonction du signal qu'il recoit
     void touche();
     void droite();
     void gauche();
+    void descendre();
 
 signals:
     void scoreChanged(int score);
@@ -62,9 +58,7 @@ protected:
     void paintGL() override;
     void keyPressEvent(QKeyEvent *event) override;
     void timerEvent(QTimerEvent *event) override;
-//! [0]
 
-//! [1]
 private:
     enum { BoardWidth = 10, BoardHeight = 20 };
 
@@ -81,6 +75,7 @@ private:
     void showNextPiece();
     bool tryMove(const TetrixPiece &newPiece, int newX, int newY);
     void drawSquare(QPainter &painter, int x, int y, TetrixShape shape);
+    // fonction qui dessine un coube en 3D
     void drawCube(int x, int y, TetrixShape shape);
 
     QBasicTimer timer;
@@ -98,12 +93,8 @@ private:
     int score;
     int level;
     TetrixShape board[BoardWidth * BoardHeight];
-
-    QGLWidget *nextPieceWidget;
-
+    // coordonnées de la caméra
     int xcam, ycam;
 };
-
-//! [1]
 
 #endif

@@ -76,10 +76,8 @@ private:
     QLabel *createLabel(const QString &text);
 
     TetrixBoard *board;
+    // défini la caméra
     camera *cameraWidget;
-
-    QGLWidget *nextPieceWidget;
-
     QLabel *nextPieceLabel;
     QLabel *cameraLabel;
     QLCDNumber *scoreLcd;
@@ -89,6 +87,4 @@ private:
     QPushButton *quitButton;
     QPushButton *pauseButton;
 };
-//! [0]
-
 #endif

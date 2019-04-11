@@ -208,9 +208,7 @@ void TetrixBoard::oneLineDown()
     if (!tryMove(curPiece, curX, curY - 1))
         pieceDropped(0);
 }
-//! [21]
 
-//! [22]
 void TetrixBoard::pieceDropped(int dropHeight)
 {
     for (int i = 0; i < 4; ++i) {
@@ -305,7 +303,7 @@ bool TetrixBoard::tryMove(const TetrixPiece &newPiece, int newX, int newY)
     updateGL();
     return true;
 }
-//! [35]
+
 void TetrixBoard::drawCube(int x, int y, TetrixShape shape)
 {
     static const QRgb colorTable[8] = {
@@ -479,6 +477,11 @@ void TetrixBoard::droite()
 void TetrixBoard::gauche()
 {
     tryMove(curPiece, curX - 1, curY);
+}
+
+void TetrixBoard::descendre()
+{
+    dropDown();
 }
 
 void TetrixBoard::showNextPiece()

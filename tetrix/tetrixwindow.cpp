@@ -107,6 +107,7 @@ TetrixWindow::TetrixWindow()
     connect(cameraWidget,SIGNAL(tourneCam()),board,SLOT(touche()));                    // faire les fonctions dans board
     connect(cameraWidget,SIGNAL(droiteCam()),board,SLOT(droite()));
     connect(cameraWidget,SIGNAL(gaucheCam()),board,SLOT(gauche()));
+    connect(cameraWidget,SIGNAL(descendreCam()),board,SLOT(descendre()));
 
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(createLabel(tr("NEXT PIECE")), 0, 0);

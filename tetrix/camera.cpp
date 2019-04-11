@@ -97,6 +97,13 @@ void camera::positionMain()
            return;
         }
 
+        if (centreY1 > 250 && centreY2 > 250)
+        {
+           qDebug()<<"descend";
+           emit descendreCam();
+           return;
+        }
+
         if ((centreY1 > 150 && centreX1 < 300 && centreY2 < 150 && centreX2 > 300) || (centreY2 > 150 && centreX2 < 300 && centreY1 < 150 && centreX1 > 300))
         {
            qDebug()<<"gauche";
